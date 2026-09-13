@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BIG BROTHER — Staff Relation</title>
+
+<style>
+:root{
+  --navy:#173f77;
+  --blue:#2f69b8;
+  --bg:#eef3f8;
+  --card:#ffffff;
+  --line:#d7e2ee;
+  --text:#172b43;
+  --muted:#6f8195;
+  --green:#18864b;
+  --green-bg:#eaf8f0;
+  --red:#bd342b;
+  --red-bg:#fff0ef;
+  --orange:#a96d00;
+  --orange-bg:#fff6df;
+  --purple:#7150a5;
+  --purple-bg:#f3effb;
+  --shadow:0 6px 20px rgba(20,55,90,.07);
+}
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+body{padding:18px}
+body.embed{padding:10px}
+body.embed .hero{display:none}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+
+.app{max-width:1500px;margin:0 auto}
+
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.hero h1{
+  margin:0;
+  color:var(--navy);
+  font-size:24px;
+  font-weight:900;
+}
+.hero p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+.staff-pill{
+  border:1px solid #c9d8ec;
+  border-radius:999px;
+  padding:8px 12px;
+  background:#edf5ff;
+  color:#245da8;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.nav{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.nav-btn{
+  border:1px solid #cbd8e7;
+  border-radius:999px;
+  background:#fff;
+  color:#345572;
+  padding:9px 13px;
+  font-size:11px;
+  font-weight:900;
+}
+.nav-btn.active{
+  border-color:var(--navy);
+  background:var(--navy);
+  color:#fff;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.profile-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  padding:14px 16px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+}
+.profile-main{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.avatar{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#edf5ff;
+  color:var(--navy);
+  font-size:18px;
+  font-weight:900;
+}
+.profile-card h2{
+  margin:0 0 4px;
+  color:var(--navy);
+  font-size:18px;
+}
+.profile-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:10px;
+}
+.refresh-btn,.primary-btn,.secondary-btn,.danger-btn,.success-btn{
+  min-height:40px;
+  border:0;
+  border-radius:9px;
+  padding:8px 13px;
+  font-size:11px;
+  font-weight:900;
+}
+.refresh-btn,.secondary-btn{background:#e8eef6;color:#345572}
+.primary-btn{background:var(--navy);color:#fff}
+.success-btn{background:var(--green-bg);color:var(--green)}
+.danger-btn{background:var(--red-bg);color:var(--red)}
+
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:12px;
+}
+.summary-card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:12px;
+  box-shadow:var(--shadow);
+}
+.summary-card small{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.summary-card strong{
+  display:block;
+  margin-top:6px;
+  color:var(--navy);
+  font-size:21px;
+  font-weight:900;
+}
+.summary-card .sub{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+}
+
+.salary-card{
+  border:1px solid #cad9eb;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ffffff,#f5f9ff);
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.salary-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+}
+.salary-head strong{color:var(--navy);font-size:14px}
+.salary-body{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0;
+}
+.salary-stat{
+  padding:14px;
+  border-right:1px solid var(--line);
+}
+.salary-stat:last-child{border-right:0}
+.salary-stat small{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.salary-stat strong{
+  display:block;
+  margin-top:6px;
+  color:var(--navy);
+  font-size:20px;
+}
+.salary-lock{
+  display:inline-flex;
+  margin-top:6px;
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:8px;
+  font-weight:900;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+  background:#fbfcfe;
+}
+.card-head strong{color:var(--navy);font-size:14px}
+.card-head span{color:var(--muted);font-size:10px}
+.card-body{padding:14px}
+
+.earning-list{
+  display:grid;
+  gap:9px;
+}
+.earning{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:11px;
+  align-items:center;
+  border:1px solid #dbe5ef;
+  border-radius:11px;
+  padding:11px;
+  background:#fff;
+}
+.earning:hover{background:#f9fbfe}
+.earning input{width:18px;height:18px}
+.earning-title{
+  color:var(--navy);
+  font-size:12px;
+  font-weight:900;
+}
+.earning-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+}
+.earning-amount{
+  min-width:100px;
+  text-align:right;
+}
+.earning-amount strong{
+  display:block;
+  color:var(--navy);
+  font-size:17px;
+}
+.earning-amount span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:8px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.badge.green{background:var(--green-bg);color:var(--green)}
+.badge.red{background:var(--red-bg);color:var(--red)}
+.badge.blue{background:#edf5ff;color:#245da8}
+.badge.orange{background:var(--orange-bg);color:var(--orange)}
+.badge.purple{background:var(--purple-bg);color:var(--purple)}
+
+.actions-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding-top:12px;
+  margin-top:12px;
+  border-top:1px solid var(--line);
+}
+.selected-total{
+  color:var(--muted);
+  font-size:10px;
+}
+.selected-total strong{
+  color:var(--navy);
+  font-size:15px;
+}
+.action-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.table-wrap{overflow:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:850px;
+}
+th,td{
+  padding:10px 9px;
+  border-bottom:1px solid #e6edf5;
+  text-align:left;
+  font-size:10px;
+  vertical-align:top;
+}
+th{
+  background:#f7f9fc;
+  color:#53657a;
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+  position:sticky;
+  top:0;
+  z-index:1;
+}
+tbody tr:hover{background:#f9fbfe}
+.money{text-align:right;font-variant-numeric:tabular-nums}
+.empty{
+  padding:28px!important;
+  text-align:center!important;
+  color:var(--muted);
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.field label{
+  display:block;
+  margin-bottom:5px;
+  color:#536a83;
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.field input,.field textarea,.field select{
+  width:100%;
+  min-height:42px;
+  border:1px solid #cbd8e7;
+  border-radius:9px;
+  background:#fff;
+  padding:8px 10px;
+  color:var(--text);
+  outline:none;
+}
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(47,105,184,.09);
+}
+.field-help{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+}
+.full{grid-column:1/-1}
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:12px;
+}
+
+.info-box{
+  border:1px solid #ccdaea;
+  border-radius:11px;
+  background:#f6f9fd;
+  padding:12px;
+  margin-bottom:12px;
+}
+.info-box small{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.info-box strong{
+  display:block;
+  margin-top:5px;
+  color:var(--navy);
+  font-size:20px;
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.info-mini{
+  border:1px solid #dde6ef;
+  border-radius:9px;
+  background:#fff;
+  padding:9px;
+}
+.info-mini small{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.info-mini strong{
+  display:block;
+  margin-top:4px;
+  color:var(--navy);
+  font-size:14px;
+}
+.status-line{
+  min-height:18px;
+  margin-top:10px;
+  color:var(--green);
+  font-size:10px;
+  font-weight:800;
+}
+.status-line.error{color:var(--red)}
+
+.note{
+  border:1px solid #d9e4ef;
+  border-radius:11px;
+  background:#f8fafc;
+  padding:11px;
+  color:#5f7287;
+  font-size:10px;
+  line-height:1.55;
+}
+
+.loading-screen{
+  min-height:360px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.loading-screen[hidden]{display:none!important}
+.loading-card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  padding:22px 26px;
+  color:var(--navy);
+  font-size:13px;
+  font-weight:900;
+  box-shadow:var(--shadow);
+}
+.error-card{
+  border:1px solid #f1c2bd;
+  border-radius:12px;
+  background:var(--red-bg);
+  color:var(--red);
+  padding:15px;
+  font-size:11px;
+  font-weight:800;
+  line-height:1.5;
+}
+.error-card[hidden]{display:none!important}
+
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  max-width:min(430px,calc(100vw - 36px));
+  border-radius:11px;
+  padding:12px 14px;
+  background:#173f77;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  line-height:1.45;
+  box-shadow:0 12px 35px rgba(0,0,0,.2);
+  z-index:9999;
+}
+.toast.error{background:#a62f29}
+.toast[hidden]{display:none!important}
+
+@media(max-width:950px){
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+  .salary-body{grid-template-columns:repeat(2,1fr)}
+  .salary-stat:nth-child(2){border-right:0}
+  .salary-stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .grid-2{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  body{padding:8px}
+  .hero{display:block}
+  .staff-pill{display:inline-block;margin-top:9px}
+  .profile-card{align-items:flex-start;flex-direction:column}
+  .summary-grid{grid-template-columns:1fr}
+  .salary-body{grid-template-columns:1fr}
+  .salary-stat{border-right:0;border-bottom:1px solid var(--line)!important}
+  .salary-stat:last-child{border-bottom:0!important}
+  .form-grid{grid-template-columns:1fr}
+  .earning{grid-template-columns:auto minmax(0,1fr)}
+  .earning-amount{grid-column:2;text-align:left}
+  .info-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <div class="hero">
+    <div>
+      <h1>👥 BIG BROTHER — Staff Relation</h1>
+      <p>Your Payment • Payment History • Leave • Special Request</p>
+    </div>
+    <div class="staff-pill">🔐 Personal Staff Account</div>
+  </div>
+
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-card">Loading your Staff Relation account…</div>
+  </div>
+
+  <div id="errorBox" class="error-card" hidden></div>
+
+  <main id="mainContent" hidden>
+
+    <section class="profile-card">
+      <div class="profile-main">
+        <div id="avatar" class="avatar">BB</div>
+        <div>
+          <h2 id="staffName">Staff</h2>
+          <p id="staffMeta">Staff ID • Position • Department</p>
+        </div>
+      </div>
+      <button id="refreshBtn" class="refresh-btn">↻ Refresh</button>
+    </section>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-page="payment">💰 Your Payment</button>
+      <button class="nav-btn" data-page="history">🧾 Payment History</button>
+      <button class="nav-btn" data-page="leave">🏖️ Leave Request</button>
+      <button class="nav-btn" data-page="leave-history">📋 Leave History</button>
+      <button class="nav-btn" data-page="special">⭐ Special Request</button>
+    </nav>
+
+    <!-- ============================================================
+         YOUR PAYMENT
+         ============================================================ -->
+    <section id="page-payment" class="page active">
+
+      <section class="summary-grid">
+        <div class="summary-card">
+          <small>Available Earnings</small>
+          <strong id="availableCount">0</strong>
+          <div class="sub">Items ready to request.</div>
+        </div>
+        <div class="summary-card">
+          <small>Available USD</small>
+          <strong id="availableUSD">$0.00</strong>
+          <div class="sub">Requestable USD earnings.</div>
+        </div>
+        <div class="summary-card">
+          <small>Payment Requests</small>
+          <strong id="pendingRequestCount">0</strong>
+          <div class="sub">Waiting for Admin approval.</div>
+        </div>
+        <div class="summary-card">
+          <small>Salary Advances</small>
+          <strong id="approvedAdvanceSummary">$0.00</strong>
+          <div class="sub">Approved advances this salary month.</div>
+        </div>
+      </section>
+
+      <section class="salary-card">
+        <div class="salary-head">
+          <strong>💵 Monthly Salary</strong>
+          <span id="salaryMonthLabel">Current Month</span>
+        </div>
+        <div class="salary-body">
+          <div class="salary-stat">
+            <small>Gross Salary</small>
+            <strong id="salaryGross">$0.00</strong>
+          </div>
+          <div class="salary-stat">
+            <small>Salary Advances</small>
+            <strong id="salaryAdvance">$0.00</strong>
+          </div>
+          <div class="salary-stat">
+            <small>Remaining Salary</small>
+            <strong id="salaryRemaining">$0.00</strong>
+          </div>
+          <div class="salary-stat">
+            <small>Request Date</small>
+            <strong id="salaryRequestDate">-</strong>
+            <span id="salaryRequestBadge" class="salary-lock badge orange">LOCKED</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <strong>Available Payment</strong>
+          <span id="availableLabel">0 earnings</span>
+        </div>
+        <div class="card-body">
+          <div id="earningList" class="earning-list"></div>
+
+          <div class="actions-row">
+            <div class="selected-total">
+              Selected:
+              <strong id="selectedTotal">$0.00</strong>
+            </div>
+            <div class="action-buttons">
+              <button id="requestSelectedBtn" class="primary-btn">Request Selected</button>
+              <button id="requestAllBtn" class="success-btn">Request All</button>
+            </div>
+          </div>
+          <div id="paymentStatus" class="status-line"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <strong>Pending Payment Requests</strong>
+          <span>Waiting for Admin Work → Staff Request</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>Requested At</th>
+                <th>Items</th>
+                <th class="money">Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="pendingPaymentRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="note">
+        Your Payment can include Sales Incentive, Driver 1 / Driver 2 Allowance, Monthly Salary, and Special Allowance. The same staff member can receive multiple earning types when they perform multiple roles.
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PAYMENT HISTORY
+         ============================================================ -->
+    <section id="page-history" class="page">
+      <section class="card">
+        <div class="card-head">
+          <strong>🧾 Payment History</strong>
+          <span id="historyCount">0 records</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Paid Date</th>
+                <th>Reference</th>
+                <th>Payment Type</th>
+                <th>Detail</th>
+                <th class="money">Amount</th>
+                <th>Expense Ref.</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================================================
+         LEAVE REQUEST
+         ============================================================ -->
+    <section id="page-leave" class="page">
+      <div class="grid-2">
+        <section class="card">
+          <div class="card-head">
+            <strong>🏖️ New Leave Request</strong>
+            <span>Only Admin-approved leave affects Special Allowance</span>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field">
+                <label>Leave From</label>
+                <input id="leaveFrom" type="date">
+              </div>
+              <div class="field">
+                <label>Leave To</label>
+                <input id="leaveTo" type="date">
+              </div>
+              <div class="field full">
+                <label>Reason</label>
+                <textarea id="leaveReason" placeholder="Why do you need leave?"></textarea>
+              </div>
+            </div>
+
+            <div id="leaveStatus" class="status-line"></div>
+
+            <div class="form-actions">
+              <button id="submitLeaveBtn" class="primary-btn">Submit Leave Request</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <strong>Leave Rule</strong>
+            <span>Special Allowance connection</span>
+          </div>
+          <div class="card-body">
+            <div class="info-box">
+              <small>Only Approved Leave Counts</small>
+              <strong>PENDING / REJECTED = No Deduction</strong>
+            </div>
+            <div class="note">
+              If your Staff profile has Special Allowance enabled, BIG BROTHER counts approved leave days at month-end and deducts the configured amount per approved leave day. The allowance never becomes negative.
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         LEAVE HISTORY
+         ============================================================ -->
+    <section id="page-leave-history" class="page">
+      <section class="card">
+        <div class="card-head">
+          <strong>📋 Leave History</strong>
+          <span id="leaveHistoryCount">0 records</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>Leave From</th>
+                <th>Leave To</th>
+                <th>Days</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Admin Note</th>
+              </tr>
+            </thead>
+            <tbody id="leaveHistoryRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================================================
+         SPECIAL REQUEST
+         ============================================================ -->
+    <section id="page-special" class="page">
+      <div class="grid-2">
+        <section class="card">
+          <div class="card-head">
+            <strong>⭐ Special Request — Salary Advance</strong>
+            <span>Borrow from your monthly salary</span>
+          </div>
+          <div class="card-body">
+
+            <div class="field" style="margin-bottom:10px">
+              <label>Salary Month</label>
+              <input id="advanceMonth" type="month">
+            </div>
+
+            <div class="info-grid" style="margin-bottom:12px">
+              <div class="info-mini">
+                <small>Gross Salary</small>
+                <strong id="advanceGross">$0.00</strong>
+              </div>
+              <div class="info-mini">
+                <small>Approved Advances</small>
+                <strong id="advanceApproved">$0.00</strong>
+              </div>
+              <div class="info-mini">
+                <small>Remaining Salary</small>
+                <strong id="advanceRemaining">$0.00</strong>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field full">
+                <label>Amount Requested</label>
+                <input id="advanceAmount" type="number" min="0" step="0.01" placeholder="0.00">
+                <div id="advanceMaxHelp" class="field-help">Maximum depends on remaining salary.</div>
+              </div>
+
+              <div class="field full">
+                <label>Reason</label>
+                <textarea id="advanceReason" placeholder="Reason for Salary Advance..."></textarea>
+              </div>
+            </div>
+
+            <div id="advanceStatus" class="status-line"></div>
+
+            <div class="form-actions">
+              <button id="submitAdvanceBtn" class="primary-btn">Submit Special Request</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <strong>How Salary Advance Works</strong>
+            <span>Protected against double payment</span>
+          </div>
+          <div class="card-body">
+            <div class="info-box">
+              <small>Remaining Salary</small>
+              <strong>Gross Salary − Approved Advances</strong>
+            </div>
+            <div class="note">
+              Admin can approve the full requested amount or a smaller amount. Only the approved amount reduces your salary. When normal salary request day arrives, you can request only the remaining salary.
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="card-head">
+          <strong>Special Request History</strong>
+          <span id="advanceHistoryCount">0 records</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>Salary Month</th>
+                <th class="money">Requested</th>
+                <th class="money">Approved</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Admin Note</th>
+              </tr>
+            </thead>
+            <tbody id="advanceHistoryRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script>
+(function(){
+  "use strict";
+
+  const SUPABASE_URL = "https://sjfhlaclgmkwwofzstok.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_w762jR65CWwlO30fKQsYOw_6L9grx8S";
+  const SESSION_KEY = "BB_SUPABASE_DEV_SESSION_V1";
+
+  let session = null;
+  let paymentData = null;
+  let paymentHistory = [];
+  let leaveHistory = [];
+  let advanceHistory = [];
+  let toastTimer = null;
+
+  const $ = id => document.getElementById(id);
+
+  const clean = value =>
+    String(value == null ? "" : value).trim();
+
+  const num = value => {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const esc = value => clean(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+  const params = new URLSearchParams(location.search);
+
+  if(params.get("embed")==="1" || params.get("shellModule")){
+    document.body.classList.add("embed");
+  }
+
+  function isoToday(){
+    const d=new Date();
+    return [
+      d.getFullYear(),
+      String(d.getMonth()+1).padStart(2,"0"),
+      String(d.getDate()).padStart(2,"0")
+    ].join("-");
+  }
+
+  function currentMonth(){
+    const d=new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+  }
+
+  function monthDate(month){
+    const m=clean(month);
+    return /^\d{4}-\d{2}$/.test(m) ? m+"-01" : null;
+  }
+
+  function initials(name){
+    const words=clean(name).split(/\s+/).filter(Boolean);
+    return words.slice(0,2).map(x=>x[0]||"").join("").toUpperCase() || "BB";
+  }
+
+  function readSession(){
+    try{
+      return JSON.parse(localStorage.getItem(SESSION_KEY)||"null");
+    }catch(_){
+      return null;
+    }
+  }
+
+  function saveSession(value){
+    session=value||null;
+    try{
+      if(!value){
+        localStorage.removeItem(SESSION_KEY);
+        return;
+      }
+      if(!value.expires_at && value.expires_in){
+        value.expires_at=Math.floor(Date.now()/1000)+Number(value.expires_in);
+      }
+      localStorage.setItem(SESSION_KEY,JSON.stringify(value));
+    }catch(_){}
+  }
+
+  async function parseResponse(response){
+    const text=await response.text();
+    let body={};
+
+    try{
+      body=text ? JSON.parse(text) : {};
+    }catch(_){
+      body={message:text};
+    }
+
+    if(!response.ok){
+      throw new Error(
+        body.message ||
+        body.error_description ||
+        body.error ||
+        `Supabase request failed (${response.status})`
+      );
+    }
+
+    return body;
+  }
+
+  async function refreshSession(){
+    const current=readSession();
+
+    if(!current?.refresh_token){
+      throw new Error("Please sign in to BIG BROTHER Dashboard first.");
+    }
+
+    const response=await fetch(
+      SUPABASE_URL+"/auth/v1/token?grant_type=refresh_token",
+      {
+        method:"POST",
+        headers:{
+          apikey:SUPABASE_KEY,
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          refresh_token:current.refresh_token
+        }),
+        cache:"no-store"
+      }
+    );
+
+    const next=await parseResponse(response);
+    saveSession(next);
+    return next;
+  }
+
+  async function ensureSession(){
+    session=readSession();
+
+    if(!session?.access_token){
+      throw new Error("Please sign in to BIG BROTHER Dashboard first.");
+    }
+
+    const now=Math.floor(Date.now()/1000);
+
+    if(session.expires_at && Number(session.expires_at)<now+45){
+      await refreshSession();
+    }
+
+    return session;
+  }
+
+  async function rpc(functionName,args={}){
+    await ensureSession();
+
+    async function call(){
+      return fetch(
+        SUPABASE_URL+"/rest/v1/rpc/"+functionName,
+        {
+          method:"POST",
+          headers:{
+            apikey:SUPABASE_KEY,
+            Authorization:"Bearer "+session.access_token,
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify(args||{}),
+          cache:"no-store"
+        }
+      );
+    }
+
+    let response=await call();
+
+    if(response.status===401){
+      await refreshSession();
+      response=await call();
+    }
+
+    return parseResponse(response);
+  }
+
+  function money(value,currency="USD"){
+    const c=clean(currency||"USD").toUpperCase();
+
+    if(c==="KHR"){
+      return "៛"+num(value).toLocaleString("en-US",{
+        maximumFractionDigits:0
+      });
+    }
+
+    return "$"+num(value).toLocaleString("en-US",{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+  }
+
+  function formatDate(value){
+    const raw=clean(value);
+    if(!raw) return "-";
+
+    const m=raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if(!m) return raw;
+
+    const months=[
+      "Jan","Feb","Mar","Apr","May","Jun",
+      "Jul","Aug","Sep","Oct","Nov","Dec"
+    ];
+
+    return `${m[3]}-${months[Number(m[2])-1]}-${m[1]}`;
+  }
+
+  function formatDateTime(value){
+    const raw=clean(value);
+    if(!raw) return "-";
+
+    const d=new Date(raw);
+    if(Number.isNaN(d.getTime())) return raw;
+
+    return d.toLocaleString("en-GB",{
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+  }
+
+  function monthLabel(value){
+    const raw=clean(value);
+    const m=raw.match(/^(\d{4})-(\d{2})/);
+
+    if(!m) return raw||"-";
+
+    const months=[
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+
+    return `${months[Number(m[2])-1]} ${m[1]}`;
+  }
+
+  function earningName(type,role){
+    const t=clean(type);
+    const r=clean(role);
+
+    if(t==="SALES_INCENTIVE") return "💼 Sales Incentive";
+    if(t==="DRIVER_ALLOWANCE"){
+      if(r==="DRIVER_2") return "🚚 Driver 2 Allowance";
+      return "🚚 Driver 1 Allowance";
+    }
+    if(t==="MONTHLY_SALARY") return "💵 Monthly Salary";
+    if(t==="SPECIAL_ALLOWANCE") return "🎁 Special Allowance";
+    if(t==="INCENTIVE_ADJUSTMENT") return "💼 Incentive Adjustment";
+    if(t==="ALLOWANCE_ADJUSTMENT") return "🚚 Allowance Adjustment";
+
+    return t.replaceAll("_"," ");
+  }
+
+  function statusBadge(status){
+    const s=clean(status).toUpperCase();
+    let cls="blue";
+
+    if(["PAID","APPROVED"].includes(s)) cls="green";
+    else if(["REJECTED","CANCELLED","VOID"].includes(s)) cls="red";
+    else if(["REQUESTED","PENDING"].includes(s)) cls="orange";
+
+    return `<span class="badge ${cls}">${esc(s||"-")}</span>`;
+  }
+
+  function showToast(message,error=false){
+    const el=$("toast");
+    el.textContent=clean(message);
+    el.classList.toggle("error",!!error);
+    el.hidden=false;
+
+    clearTimeout(toastTimer);
+
+    toastTimer=setTimeout(()=>{
+      el.hidden=true;
+    },3600);
+  }
+
+  function setStatus(id,message,error=false){
+    const el=$(id);
+    el.textContent=clean(message);
+    el.classList.toggle("error",!!error);
+  }
+
+  function setBusy(button,busy,text="Please wait..."){
+    if(!button) return;
+
+    if(busy){
+      button.dataset.old=button.textContent;
+      button.textContent=text;
+      button.disabled=true;
+    }else{
+      button.textContent=button.dataset.old||button.textContent;
+      button.disabled=false;
+    }
+  }
+
+  function fatal(message){
+    $("loadingScreen").hidden=true;
+    $("mainContent").hidden=true;
+    $("errorBox").textContent=clean(message);
+    $("errorBox").hidden=false;
+  }
+
+  function selectedPage(){
+    const p=clean(params.get("page")).toLowerCase();
+
+    if(["history","payment-history"].includes(p)) return "history";
+    if(["leave","leave-request"].includes(p)) return "leave";
+    if(["leave-history","leavehistory"].includes(p)) return "leave-history";
+    if(["special","special-request"].includes(p)) return "special";
+
+    return "payment";
+  }
+
+  function activatePage(page,updateUrl=true){
+    const safe=["payment","history","leave","leave-history","special"].includes(page)
+      ? page
+      : "payment";
+
+    document.querySelectorAll(".nav-btn").forEach(btn=>{
+      btn.classList.toggle("active",btn.dataset.page===safe);
+    });
+
+    document.querySelectorAll(".page").forEach(panel=>{
+      panel.classList.toggle("active",panel.id==="page-"+safe);
+    });
+
+    if(updateUrl){
+      const url=new URL(location.href);
+      url.searchParams.set("page",safe);
+      history.replaceState(null,"",url);
+    }
+  }
+
+  async function loadAll(showLoading=true){
+    if(showLoading){
+      $("loadingScreen").hidden=false;
+      $("mainContent").hidden=true;
+    }
+
+    $("errorBox").hidden=true;
+
+    try{
+      const month=monthDate($("advanceMonth").value||currentMonth());
+
+      const [
+        payments,
+        historyData,
+        leaveData,
+        advanceData
+      ]=await Promise.all([
+        rpc("bb_staff_relation_my_payments",{
+          p_from:null,
+          p_to:null,
+          p_salary_month:month
+        }),
+        rpc("bb_staff_relation_my_payment_history",{
+          p_limit:200
+        }),
+        rpc("bb_staff_relation_my_leave_history",{
+          p_limit:200
+        }),
+        rpc("bb_staff_relation_my_salary_advance_history",{
+          p_limit:200
+        })
+      ]);
+
+      if(!payments?.success){
+        throw new Error("Could not load Your Payment.");
+      }
+
+      paymentData=payments;
+      paymentHistory=Array.isArray(historyData?.payments) ? historyData.payments : [];
+      leaveHistory=Array.isArray(leaveData?.leaveRequests) ? leaveData.leaveRequests : [];
+      advanceHistory=Array.isArray(advanceData?.specialRequests) ? advanceData.specialRequests : [];
+
+      renderAll();
+
+      $("loadingScreen").hidden=true;
+      $("mainContent").hidden=false;
+
+    }catch(error){
+      console.error(error);
+      fatal(error?.message||error);
+    }
+  }
+
+  function renderProfile(){
+    const s=paymentData?.staff||{};
+
+    $("staffName").textContent=clean(s.staffName)||"Staff";
+    $("avatar").textContent=initials(s.staffName);
+
+    const parts=[
+      clean(s.staffId),
+      clean(s.position),
+      clean(s.departmentCode)
+    ].filter(Boolean);
+
+    $("staffMeta").textContent=parts.join(" • ")||"Staff profile";
+  }
+
+  function renderSalary(){
+    const s=paymentData?.salary||{};
+
+    $("salaryMonthLabel").textContent=monthLabel(s.salaryMonth);
+    $("salaryGross").textContent=money(s.grossSalary,"USD");
+    $("salaryAdvance").textContent=money(s.approvedAdvances,"USD");
+    $("salaryRemaining").textContent=money(s.remainingSalary,"USD");
+    $("salaryRequestDate").textContent=formatDate(s.requestDate);
+
+    const badge=$("salaryRequestBadge");
+
+    if(s.requestOpen){
+      badge.className="salary-lock badge green";
+      badge.textContent="AVAILABLE";
+    }else{
+      badge.className="salary-lock badge orange";
+      badge.textContent="LOCKED";
+    }
+
+    $("approvedAdvanceSummary").textContent=money(s.approvedAdvances,"USD");
+
+    $("advanceGross").textContent=money(s.grossSalary,"USD");
+    $("advanceApproved").textContent=money(s.approvedAdvances,"USD");
+    $("advanceRemaining").textContent=money(s.remainingSalary,"USD");
+
+    $("advanceMaxHelp").textContent=
+      `Maximum available salary advance: ${money(s.remainingSalary,"USD")}`;
+
+    const max=Math.max(0,num(s.remainingSalary));
+    $("advanceAmount").max=String(max);
+  }
+
+  function earningMeta(e){
+    const bits=[];
+
+    if(e.sourceDate) bits.push(formatDate(e.sourceDate));
+    if(e.salaryMonth) bits.push(monthLabel(e.salaryMonth));
+    if(e.locationCode) bits.push(e.locationCode);
+    if(e.batchId) bits.push(e.batchId);
+
+    const snap=e.snapshot||{};
+
+    if(e.earningType==="SALES_INCENTIVE" && snap.dailySaleUSD!=null){
+      bits.push(`Sales ${money(snap.dailySaleUSD,"USD")}`);
+      if(snap.incentiveRatePercent!=null){
+        bits.push(`Rate ${num(snap.incentiveRatePercent).toFixed(2)}%`);
+      }
+    }
+
+    if(e.earningType==="SPECIAL_ALLOWANCE"){
+      if(snap.approvedLeaveDays!=null){
+        bits.push(`Approved Leave ${num(snap.approvedLeaveDays)} day(s)`);
+      }
+      if(num(e.deductionAmount)>0){
+        bits.push(`Deduction ${money(e.deductionAmount,e.currency)}`);
+      }
+    }
+
+    if(e.earningType==="MONTHLY_SALARY" && num(e.deductionAmount)>0){
+      bits.push(`Advance Deduction ${money(e.deductionAmount,e.currency)}`);
+    }
+
+    return bits.join(" • ");
+  }
+
+  function renderAvailable(){
+    const list=Array.isArray(paymentData?.available) ? paymentData.available : [];
+
+    const usdTotal=list
+      .filter(x=>clean(x.currency||"USD").toUpperCase()==="USD")
+      .reduce((sum,x)=>sum+num(x.amount),0);
+
+    $("availableCount").textContent=list.length.toLocaleString("en-US");
+    $("availableUSD").textContent=money(usdTotal,"USD");
+    $("availableLabel").textContent=`${list.length} earning${list.length===1?"":"s"}`;
+
+    if(!list.length){
+      $("earningList").innerHTML=`
+        <div class="empty">
+          No payment is available to request right now.
+        </div>
+      `;
+    }else{
+      $("earningList").innerHTML=list.map(e=>`
+        <label class="earning">
+          <input
+            class="earning-check"
+            type="checkbox"
+            value="${Number(e.earningId)}"
+            data-amount="${Number(e.amount)||0}"
+            data-currency="${esc(clean(e.currency||"USD").toUpperCase())}"
+          >
+          <div>
+            <div class="earning-title">
+              ${esc(earningName(e.earningType,e.sourceRole))}
+            </div>
+            <div class="earning-meta">
+              ${esc(earningMeta(e)||"BIG BROTHER Staff Earning")}
+            </div>
+          </div>
+          <div class="earning-amount">
+            <strong>${esc(money(e.amount,e.currency))}</strong>
+            <span>${esc(e.currency||"USD")}</span>
+          </div>
+        </label>
+      `).join("");
+    }
+
+    document.querySelectorAll(".earning-check").forEach(cb=>{
+      cb.addEventListener("change",updateSelectedTotal);
+    });
+
+    updateSelectedTotal();
+  }
+
+  function updateSelectedTotal(){
+    const checks=[...document.querySelectorAll(".earning-check:checked")];
+
+    if(!checks.length){
+      $("selectedTotal").textContent="$0.00";
+      return;
+    }
+
+    const currencies=[...new Set(checks.map(x=>x.dataset.currency))];
+
+    if(currencies.length>1){
+      $("selectedTotal").textContent="Multiple currencies";
+      return;
+    }
+
+    const total=checks.reduce((sum,x)=>sum+num(x.dataset.amount),0);
+
+    $("selectedTotal").textContent=money(total,currencies[0]||"USD");
+  }
+
+  function renderPending(){
+    const rows=Array.isArray(paymentData?.pendingPaymentRequests)
+      ? paymentData.pendingPaymentRequests
+      : [];
+
+    $("pendingRequestCount").textContent=rows.length.toLocaleString("en-US");
+
+    $("pendingPaymentRows").innerHTML=rows.length ? rows.map(r=>`
+      <tr>
+        <td><strong>${esc(r.requestNo)}</strong></td>
+        <td>${esc(formatDateTime(r.requestedAt))}</td>
+        <td>
+          ${(Array.isArray(r.items)?r.items:[]).map(i=>
+            `<div>${esc(earningName(i.earningType,i.sourceRole))} — ${esc(money(i.amount,r.currency))}</div>`
+          ).join("") || "-"}
+        </td>
+        <td class="money"><strong>${esc(money(r.requestedAmount,r.currency))}</strong></td>
+        <td>${statusBadge(r.status)}</td>
+      </tr>
+    `).join("") : '<tr><td colspan="5" class="empty">No pending payment request.</td></tr>';
+  }
+
+  function paymentDetail(p){
+    const detail=p.detail||{};
+
+    if(p.historyType==="SALARY_ADVANCE"){
+      return `Salary Advance • ${monthLabel(detail.salaryMonth)}`;
+    }
+
+    const items=Array.isArray(detail.items)?detail.items:[];
+
+    if(!items.length) return "Staff Payment";
+
+    return items.map(i=>earningName(i.earningType,i.sourceRole)).join(", ");
+  }
+
+  function renderPaymentHistory(){
+    $("historyCount").textContent=`${paymentHistory.length} record${paymentHistory.length===1?"":"s"}`;
+
+    $("historyRows").innerHTML=paymentHistory.length ? paymentHistory.map(p=>`
+      <tr>
+        <td>${esc(formatDateTime(p.paidAt))}</td>
+        <td><strong>${esc(p.referenceNo)}</strong></td>
+        <td>
+          <span class="badge ${p.historyType==="SALARY_ADVANCE"?"purple":"blue"}">
+            ${esc(p.historyType==="SALARY_ADVANCE"?"SALARY ADVANCE":"STAFF PAYMENT")}
+          </span>
+        </td>
+        <td>${esc(paymentDetail(p))}</td>
+        <td class="money"><strong>${esc(money(p.amount,p.detail?.currency||"USD"))}</strong></td>
+        <td>${esc(p.expenseId||"-")}</td>
+        <td>${statusBadge(p.status)}</td>
+      </tr>
+    `).join("") : '<tr><td colspan="7" class="empty">No payment history yet.</td></tr>';
+  }
+
+  function renderLeaveHistory(){
+    $("leaveHistoryCount").textContent=`${leaveHistory.length} record${leaveHistory.length===1?"":"s"}`;
+
+    $("leaveHistoryRows").innerHTML=leaveHistory.length ? leaveHistory.map(r=>`
+      <tr>
+        <td><strong>${esc(r.requestNo)}</strong></td>
+        <td>${esc(formatDate(r.leaveFrom))}</td>
+        <td>${esc(formatDate(r.leaveTo))}</td>
+        <td>${esc(num(r.leaveDays).toLocaleString("en-US"))}</td>
+        <td>${esc(r.reason||"-")}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td>${esc(r.adminNote||"-")}</td>
+      </tr>
+    `).join("") : '<tr><td colspan="7" class="empty">No Leave Request history yet.</td></tr>';
+  }
+
+  function renderAdvanceHistory(){
+    $("advanceHistoryCount").textContent=`${advanceHistory.length} record${advanceHistory.length===1?"":"s"}`;
+
+    $("advanceHistoryRows").innerHTML=advanceHistory.length ? advanceHistory.map(r=>`
+      <tr>
+        <td><strong>${esc(r.requestNo)}</strong></td>
+        <td>${esc(monthLabel(r.salaryMonth))}</td>
+        <td class="money">${esc(money(r.requestedAmount,r.currency))}</td>
+        <td class="money"><strong>${r.approvedAmount==null ? "-" : esc(money(r.approvedAmount,r.currency))}</strong></td>
+        <td>${esc(r.reason||"-")}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td>${esc(r.adminNote||"-")}</td>
+      </tr>
+    `).join("") : '<tr><td colspan="7" class="empty">No Special Request history yet.</td></tr>';
+  }
+
+  function renderAll(){
+    renderProfile();
+    renderSalary();
+    renderAvailable();
+    renderPending();
+    renderPaymentHistory();
+    renderLeaveHistory();
+    renderAdvanceHistory();
+  }
+
+  async function requestEarnings(ids){
+    return rpc("bb_staff_relation_request_payment",{
+      p_earning_ids:ids
+    });
+  }
+
+  async function requestSelected(){
+    const btn=$("requestSelectedBtn");
+    setStatus("paymentStatus","");
+
+    const checks=[...document.querySelectorAll(".earning-check:checked")];
+
+    if(!checks.length){
+      setStatus("paymentStatus","Select at least one payment first.",true);
+      return;
+    }
+
+    const currencies=[...new Set(checks.map(x=>x.dataset.currency))];
+
+    if(currencies.length>1){
+      setStatus("paymentStatus","Please request USD and KHR payments separately.",true);
+      return;
+    }
+
+    const ids=checks.map(x=>Number(x.value));
+
+    setBusy(btn,true,"Requesting...");
+
+    try{
+      const result=await requestEarnings(ids);
+
+      showToast(`${result.requestNo||"Payment"} requested successfully ✅`);
+      setStatus("paymentStatus","Payment Request sent to Admin.");
+      await loadAll(false);
+
+    }catch(error){
+      setStatus("paymentStatus",error?.message||error,true);
+    }finally{
+      setBusy(btn,false);
+    }
+  }
+
+  async function requestAll(){
+    const btn=$("requestAllBtn");
+    setStatus("paymentStatus","");
+
+    const available=Array.isArray(paymentData?.available)
+      ? paymentData.available
+      : [];
+
+    if(!available.length){
+      setStatus("paymentStatus","No available payment to request.",true);
+      return;
+    }
+
+    const groups={};
+
+    available.forEach(e=>{
+      const c=clean(e.currency||"USD").toUpperCase();
+      if(!groups[c]) groups[c]=[];
+      groups[c].push(Number(e.earningId));
+    });
+
+    setBusy(btn,true,"Requesting...");
+
+    try{
+      const refs=[];
+
+      for(const currency of Object.keys(groups)){
+        const result=await requestEarnings(groups[currency]);
+        refs.push(result.requestNo||currency);
+      }
+
+      showToast(`Payment Request sent ✅ ${refs.join(", ")}`);
+      setStatus("paymentStatus","All available payments were requested.");
+      await loadAll(false);
+
+    }catch(error){
+      setStatus("paymentStatus",error?.message||error,true);
+    }finally{
+      setBusy(btn,false);
+    }
+  }
+
+  async function submitLeave(){
+    const btn=$("submitLeaveBtn");
+    setStatus("leaveStatus","");
+
+    const from=$("leaveFrom").value;
+    const to=$("leaveTo").value;
+    const reason=clean($("leaveReason").value);
+
+    if(!from || !to){
+      setStatus("leaveStatus","Leave From and Leave To are required.",true);
+      return;
+    }
+
+    if(to<from){
+      setStatus("leaveStatus","Leave To cannot be before Leave From.",true);
+      return;
+    }
+
+    setBusy(btn,true,"Submitting...");
+
+    try{
+      const result=await rpc("bb_staff_relation_submit_leave",{
+        p_leave_from:from,
+        p_leave_to:to,
+        p_reason:reason||null
+      });
+
+      showToast(`${result.requestNo||"Leave"} submitted ✅`);
+      setStatus("leaveStatus","Leave Request sent to Admin.");
+
+      $("leaveReason").value="";
+
+      await loadAll(false);
+      activatePage("leave-history");
+
+    }catch(error){
+      setStatus("leaveStatus",error?.message||error,true);
+    }finally{
+      setBusy(btn,false);
+    }
+  }
+
+  async function reloadSalaryMonth(){
+    const selected=monthDate($("advanceMonth").value);
+
+    if(!selected) return;
+
+    try{
+      const payments=await rpc("bb_staff_relation_my_payments",{
+        p_from:null,
+        p_to:null,
+        p_salary_month:selected
+      });
+
+      if(payments?.success){
+        paymentData=payments;
+        renderSalary();
+        renderAvailable();
+        renderPending();
+      }
+
+    }catch(error){
+      showToast(error?.message||error,true);
+    }
+  }
+
+  async function submitAdvance(){
+    const btn=$("submitAdvanceBtn");
+    setStatus("advanceStatus","");
+
+    const month=monthDate($("advanceMonth").value);
+    const amount=num($("advanceAmount").value);
+    const reason=clean($("advanceReason").value);
+    const remaining=num(paymentData?.salary?.remainingSalary);
+
+    if(!month){
+      setStatus("advanceStatus","Salary Month is required.",true);
+      return;
+    }
+
+    if(amount<=0){
+      setStatus("advanceStatus","Requested Amount must be greater than zero.",true);
+      return;
+    }
+
+    if(amount>remaining){
+      setStatus(
+        "advanceStatus",
+        `Maximum Salary Advance available is ${money(remaining,"USD")}.`,
+        true
+      );
+      return;
+    }
+
+    setBusy(btn,true,"Submitting...");
+
+    try{
+      const result=await rpc("bb_staff_relation_submit_salary_advance",{
+        p_salary_month:month,
+        p_requested_amount:amount,
+        p_reason:reason||null
+      });
+
+      showToast(`${result.requestNo||"Special Request"} submitted ✅`);
+      setStatus("advanceStatus","Salary Advance Request sent to Admin.");
+
+      $("advanceAmount").value="";
+      $("advanceReason").value="";
+
+      await loadAll(false);
+
+    }catch(error){
+      setStatus("advanceStatus",error?.message||error,true);
+    }finally{
+      setBusy(btn,false);
+    }
+  }
+
+  function bind(){
+    document.querySelectorAll(".nav-btn").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        activatePage(btn.dataset.page);
+      });
+    });
+
+    $("refreshBtn").addEventListener("click",()=>loadAll(true));
+    $("requestSelectedBtn").addEventListener("click",requestSelected);
+    $("requestAllBtn").addEventListener("click",requestAll);
+    $("submitLeaveBtn").addEventListener("click",submitLeave);
+    $("submitAdvanceBtn").addEventListener("click",submitAdvance);
+
+    $("advanceMonth").addEventListener("change",reloadSalaryMonth);
+  }
+
+  function defaults(){
+    $("leaveFrom").value=isoToday();
+    $("leaveTo").value=isoToday();
+    $("advanceMonth").value=currentMonth();
+  }
+
+  bind();
+  defaults();
+  activatePage(selectedPage(),false);
+  loadAll(true);
+
+})();
+</script>
+</body>
+</html>
