@@ -8,7 +8,7 @@ const clean=v=>String(v==null?'':v).trim();
 const num=v=>{const n=Number(v);return Number.isFinite(n)?n:0};
 const esc=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const params=new URLSearchParams(location.search);
-let session=null,accessProfile=null,paymentData=null,paymentHistory=[],leaveHistory=[],advanceHistory=[],adminProfiles=[],adminMode=false,selectedAdminStaff='',toastTimer=null;
+let session=null,accessProfile=null,paymentData=null,paymentHistory=[],leaveHistory=[],advanceHistory=[],adminProfiles=[],adminMode=false,selectedAdminStaff='',toastTimer=null,earningComparison=null,locationNames={};
 if(params.get('embed')==='1'||params.get('shellModule'))document.body.classList.add('embed');
 function currentMonth(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
 function monthDate(v){const m=clean(v);return /^\d{4}-\d{2}$/.test(m)?m+'-01':null}
@@ -19,6 +19,9 @@ async function parseResponse(r){const t=await r.text();let b={};try{b=t?JSON.par
 async function refreshSession(){const c=readSession();if(!c?.refresh_token)throw new Error('Please sign in to BIG BROTHER Dashboard first.');const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:c.refresh_token}),cache:'no-store'});const n=await parseResponse(r);saveSession(n);return n}
 async function ensureSession(){session=readSession();if(!session?.access_token)throw new Error('Please sign in to BIG BROTHER Dashboard first.');if(session.expires_at&&Number(session.expires_at)<Math.floor(Date.now()/1000)+45)await refreshSession();return session}
 async function rpc(name,args={}){await ensureSession();async function call(){return fetch(SUPABASE_URL+'/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify(args||{}),cache:'no-store'})}let r=await call();if(r.status===401){await refreshSession();r=await call()}return parseResponse(r)}
+async function optionalRpc(name,args={}){try{return await rpc(name,args)}catch(error){console.warn('BIG BROTHER optional Staff Relation RPC:',name,error);return null}}
+function applyLocationMap(data){locationNames={};for(const row of (Array.isArray(data?.locations)?data.locations:[])){const code=clean(row.locationCode);const name=clean(row.locationName);if(code&&name)locationNames[code]=name}}
+function earningLocationName(e){return clean(e?.locationName)||clean(locationNames[clean(e?.locationCode)])}
 function money(v,c='USD'){return clean(c).toUpperCase()==='KHR'?'៛'+num(v).toLocaleString('en-US',{maximumFractionDigits:0}):'$'+num(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function formatDate(v){const r=clean(v),m=r.match(/^(\d{4})-(\d{2})-(\d{2})/);if(!m)return r||'-';const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return `${m[3]}-${mo[+m[2]-1]}-${m[1]}`}
 function formatDateTime(v){const r=clean(v);if(!r)return'-';const d=new Date(r);return Number.isNaN(d.getTime())?r:d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
@@ -37,12 +40,108 @@ function setMode(mode,reload=true){adminMode=isAdmin()&&mode==='admin';document.
 function deDupeAdminProfiles(rows){const map=new Map();for(const r of rows||[]){const p=clean(r.relationPrimaryStaffId)||clean(r.staffId);if(!p)continue;const old=map.get(p);if(!old||clean(r.staffId)===p)map.set(p,{...r,staffId:p})}return [...map.values()].sort((a,b)=>clean(a.staffName).localeCompare(clean(b.staffName))||clean(a.staffId).localeCompare(clean(b.staffId)))}
 function renderAdminTools(){if(!isAdmin()){ $('adminTools').classList.remove('show');return }$('adminTools').classList.add('show');const sel=$('adminStaffSelect');sel.innerHTML=adminProfiles.map(s=>`<option value="${esc(s.staffId)}">${esc(s.staffName)} — ${esc(s.staffId)}${s.position?' — '+esc(s.position):''}</option>`).join('');if(!selectedAdminStaff&&adminProfiles.length)selectedAdminStaff=adminProfiles[0].staffId;if(selectedAdminStaff)sel.value=selectedAdminStaff;$('adminStaffWrap').style.display=adminMode?'':'none';$('readOnlyBanner').classList.toggle('show',adminMode);$('personalModeBtn').classList.toggle('active',!adminMode);$('adminModeBtn').classList.toggle('active',adminMode)}
 async function bootstrapAccess(){accessProfile=await rpc('bb_current_access_profile');if(isAdmin()){const d=await rpc('bb_staff_relation_admin_staff_list');adminProfiles=deDupeAdminProfiles(d?.staff||[]);selectedAdminStaff=clean(params.get('staff'));if(!adminProfiles.some(x=>x.staffId===selectedAdminStaff))selectedAdminStaff=clean(accessProfile?.user?.staffId)||adminProfiles[0]?.staffId||'';const requested=clean(params.get('mode')).toLowerCase();adminMode=requested==='admin'||(!accessProfile?.staff&&adminProfiles.length>0);document.body.classList.toggle('admin-readonly',adminMode)}else adminMode=false;renderAdminTools()}
-async function loadPersonal(month){const [p,h,l,a]=await Promise.all([rpc('bb_staff_relation_my_payments',{p_from:null,p_to:null,p_salary_month:month}),rpc('bb_staff_relation_my_payment_history',{p_limit:200}),rpc('bb_staff_relation_my_leave_history',{p_limit:200}),rpc('bb_staff_relation_my_salary_advance_history',{p_limit:200})]);if(!p?.success)throw new Error('Could not load Your Payment.');paymentData=p;paymentHistory=Array.isArray(h?.payments)?h.payments:[];leaveHistory=Array.isArray(l?.leaveRequests)?l.leaveRequests:[];advanceHistory=Array.isArray(a?.specialRequests)?a.specialRequests:[]}
-async function loadAdmin(month){if(!selectedAdminStaff)throw new Error('No Staff profile is available for Admin View.');const d=await rpc('bb_staff_relation_admin_view',{p_staff_id:selectedAdminStaff,p_from:null,p_to:null,p_salary_month:month,p_limit:200});if(!d?.success)throw new Error('Could not load Admin Staff View.');paymentData=d;paymentHistory=Array.isArray(d.paymentHistory)?d.paymentHistory:[];leaveHistory=Array.isArray(d.leaveHistory)?d.leaveHistory:[];advanceHistory=Array.isArray(d.advanceHistory)?d.advanceHistory:[]}
+async function loadPersonal(month){const [p,h,l,a,cmp,loc]=await Promise.all([rpc('bb_staff_relation_my_payments',{p_from:null,p_to:null,p_salary_month:month}),rpc('bb_staff_relation_my_payment_history',{p_limit:200}),rpc('bb_staff_relation_my_leave_history',{p_limit:200}),rpc('bb_staff_relation_my_salary_advance_history',{p_limit:200}),optionalRpc('bb_staff_relation_monthly_earning_comparison',{p_staff_id:null,p_month:monthDate(currentMonth())}),optionalRpc('bb_staff_relation_location_map')]);if(!p?.success)throw new Error('Could not load Your Payment.');paymentData=p;paymentHistory=Array.isArray(h?.payments)?h.payments:[];leaveHistory=Array.isArray(l?.leaveRequests)?l.leaveRequests:[];advanceHistory=Array.isArray(a?.specialRequests)?a.specialRequests:[];earningComparison=cmp?.success?cmp:null;applyLocationMap(loc)}
+async function loadAdmin(month){if(!selectedAdminStaff)throw new Error('No Staff profile is available for Admin View.');const [d,cmp,loc]=await Promise.all([rpc('bb_staff_relation_admin_view',{p_staff_id:selectedAdminStaff,p_from:null,p_to:null,p_salary_month:month,p_limit:200}),optionalRpc('bb_staff_relation_monthly_earning_comparison',{p_staff_id:selectedAdminStaff,p_month:monthDate(currentMonth())}),optionalRpc('bb_staff_relation_location_map')]);if(!d?.success)throw new Error('Could not load Admin Staff View.');paymentData=d;paymentHistory=Array.isArray(d.paymentHistory)?d.paymentHistory:[];leaveHistory=Array.isArray(d.leaveHistory)?d.leaveHistory:[];advanceHistory=Array.isArray(d.advanceHistory)?d.advanceHistory:[];earningComparison=cmp?.success?cmp:null;applyLocationMap(loc)}
 async function loadAll(show=true){if(show){$('loadingScreen').hidden=false;$('mainContent').hidden=true}$('errorBox').hidden=true;try{const month=monthDate($('advanceMonth').value||currentMonth());if(readOnly())await loadAdmin(month);else await loadPersonal(month);renderAll();$('loadingScreen').hidden=true;$('mainContent').hidden=false}catch(e){console.error(e);fatal(e?.message||e)}}
 function renderProfile(){const s=paymentData?.staff||{};$('staffName').textContent=clean(s.staffName)||'Staff';$('avatar').textContent=initials(s.staffName);$('staffMeta').textContent=[clean(s.staffId),clean(s.position),clean(s.departmentCode)].filter(Boolean).join(' • ')||'Staff profile';if(readOnly())$('refreshBtn').textContent='↻ Refresh Staff View';else $('refreshBtn').textContent='↻ Refresh'}
 function renderSalary(){const s=paymentData?.salary||{};$('salaryMonthLabel').textContent=monthLabel(s.salaryMonth);$('salaryGross').textContent=money(s.grossSalary,'USD');$('salaryAdvance').textContent=money(s.approvedAdvances,'USD');$('salaryRemaining').textContent=money(s.remainingSalary,'USD');$('salaryRequestDate').textContent=formatDate(s.requestDate);const b=$('salaryRequestBadge');b.className='salary-lock badge '+(s.requestOpen?'green':'orange');b.textContent=s.requestOpen?'AVAILABLE':'LOCKED';$('approvedAdvanceSummary').textContent=money(s.approvedAdvances,'USD');$('advanceGross').textContent=money(s.grossSalary,'USD');$('advanceApproved').textContent=money(s.approvedAdvances,'USD');$('advanceRemaining').textContent=money(s.remainingSalary,'USD');$('advanceMaxHelp').textContent=`Maximum available salary advance: ${money(s.remainingSalary,'USD')}`;$('advanceAmount').max=String(Math.max(0,num(s.remainingSalary)))}
-function earningMeta(e){const b=[];if(e.sourceDate)b.push(formatDate(e.sourceDate));if(e.salaryMonth)b.push(monthLabel(e.salaryMonth));if(e.locationCode)b.push(e.locationCode);if(e.batchId)b.push(e.batchId);const s=e.snapshot||{};if(e.earningType==='SALES_INCENTIVE'&&s.dailySaleUSD!=null){b.push(`Sales ${money(s.dailySaleUSD,'USD')}`);if(s.incentiveRatePercent!=null)b.push(`Rate ${num(s.incentiveRatePercent).toFixed(2)}%`)}if(e.earningType==='SPECIAL_ALLOWANCE'){if(s.approvedLeaveDays!=null)b.push(`Approved Leave ${num(s.approvedLeaveDays)} day(s)`);if(num(e.deductionAmount)>0)b.push(`Deduction ${money(e.deductionAmount,e.currency)}`)}if(e.earningType==='MONTHLY_SALARY'&&num(e.deductionAmount)>0)b.push(`Advance Deduction ${money(e.deductionAmount,e.currency)}`);return b.join(' • ')}
+function ensureEarningComparisonUI(){
+  if($('earningCompareCard'))return;
+  const salary=document.querySelector('#page-payment .salary-card');
+  if(!salary)return;
+
+  if(!$('earningCompareStyle')){
+    const style=document.createElement('style');
+    style.id='earningCompareStyle';
+    style.textContent=
+      '.earning-compare-card{overflow:hidden}'+
+      '.earning-compare-body{padding:12px}'+
+      '.earning-compare-totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}'+
+      '.earning-compare-total{border:1px solid #d8e3ef;border-radius:10px;background:#f8fbff;padding:11px 12px}'+
+      '.earning-compare-total.current{background:#eef7ff;border-color:#bad5f3}'+
+      '.earning-compare-total.change{background:#f3faf6;border-color:#c9e7d5}'+
+      '.earning-compare-total small{display:block;color:#718197;font-size:9px;font-weight:900;text-transform:uppercase}'+
+      '.earning-compare-total strong{display:block;margin-top:5px;color:#0d4385;font-size:19px}'+
+      '.earning-compare-total span{display:block;margin-top:3px;color:#718197;font-size:9px;font-weight:700}'+
+      '.earning-compare-table-wrap{overflow:auto;border:1px solid #dfe7ef;border-radius:10px}'+
+      '.earning-compare-table{width:100%;border-collapse:collapse;min-width:540px}'+
+      '.earning-compare-table th{background:#f4f8fc;color:#667085;font-size:9px;text-transform:uppercase;text-align:left;padding:8px 10px}'+
+      '.earning-compare-table th:not(:first-child),.earning-compare-table td:not(:first-child){text-align:right}'+
+      '.earning-compare-table td{border-top:1px solid #e8eef5;padding:9px 10px;font-size:10px;font-weight:800;color:#36506d}'+
+      '.earning-compare-table td:first-child{color:#173f77}'+
+      '.earning-compare-note{margin-top:8px;color:#718197;font-size:9px;font-weight:700;line-height:1.45}'+
+      '@media(max-width:720px){.earning-compare-totals{grid-template-columns:1fr}.earning-compare-total strong{font-size:17px}}';
+    document.head.appendChild(style);
+  }
+
+  const card=document.createElement('section');
+  card.id='earningCompareCard';
+  card.className='card earning-compare-card';
+  card.innerHTML=
+    '<div class="card-head"><strong>📊 Monthly Earnings Comparison</strong><span id="earningCompareRange">Last Month vs This Month</span></div>'+
+    '<div class="earning-compare-body">'+
+      '<div class="earning-compare-totals">'+
+        '<div class="earning-compare-total"><small id="earningPrevLabel">Last Month</small><strong id="earningPrevTotal">$0.00</strong><span>Gross earning</span></div>'+
+        '<div class="earning-compare-total current"><small id="earningCurrentLabel">This Month</small><strong id="earningCurrentTotal">$0.00</strong><span>Gross earning</span></div>'+
+        '<div class="earning-compare-total change"><small>Change</small><strong id="earningChangeTotal">$0.00</strong><span id="earningChangeLabel">vs last month</span></div>'+
+      '</div>'+
+      '<div class="earning-compare-table-wrap"><table class="earning-compare-table"><thead><tr><th>Earning Type</th><th id="earningPrevHead">Last Month</th><th id="earningCurrentHead">This Month</th><th>Change</th></tr></thead><tbody id="earningCompareRows"></tbody></table></div>'+
+      '<div class="earning-compare-note">Total earning includes gross monthly salary + earned Sales Incentive + Driver Allowance + Special Allowance. Salary Advance is a payout against salary, so it does not reduce gross earning.</div>'+
+    '</div>';
+  salary.insertAdjacentElement('afterend',card);
+}
+function earningPair(v){
+  const usd=num(v?.USD),khr=num(v?.KHR);
+  if(usd&&khr)return money(usd,'USD')+' + '+money(khr,'KHR');
+  if(khr)return money(khr,'KHR');
+  return money(usd,'USD');
+}
+function totalPair(v){return earningPair({USD:num(v?.totalUSD),KHR:num(v?.totalKHR)})}
+function signedMoney(v,c){
+  const n=num(v);
+  if(Math.abs(n)<0.000001)return money(0,c);
+  return (n>0?'+':'−')+money(Math.abs(n),c);
+}
+function signedPair(v){
+  const usd=num(v?.USD),khr=num(v?.KHR),parts=[];
+  if(Math.abs(usd)>0.000001)parts.push(signedMoney(usd,'USD'));
+  if(Math.abs(khr)>0.000001)parts.push(signedMoney(khr,'KHR'));
+  return parts.length?parts.join(' · '):money(0,'USD');
+}
+function renderEarningComparison(){
+  ensureEarningComparisonUI();
+  const c=earningComparison;
+  if(!c?.current||!c?.previous){
+    $('earningCompareCard').style.display='none';
+    return;
+  }
+  $('earningCompareCard').style.display='';
+  const cur=c.current,prev=c.previous;
+  const curLabel=monthLabel(cur.month),prevLabel=monthLabel(prev.month);
+  $('earningCompareRange').textContent=prevLabel+' vs '+curLabel;
+  $('earningPrevLabel').textContent=prevLabel;
+  $('earningCurrentLabel').textContent=curLabel;
+  $('earningPrevHead').textContent=prevLabel;
+  $('earningCurrentHead').textContent=curLabel;
+  $('earningPrevTotal').textContent=totalPair(prev);
+  $('earningCurrentTotal').textContent=totalPair(cur);
+  $('earningChangeTotal').textContent=signedPair(c.difference);
+  $('earningChangeLabel').textContent='vs '+prevLabel;
+
+  const rows=[
+    ['💵 Salary','salary'],
+    ['💼 Sales Incentive','salesIncentive'],
+    ['🚚 Driver Allowance','driverAllowance'],
+    ['🎁 Special Allowance','specialAllowance']
+  ];
+  if(num(prev.other?.USD)||num(prev.other?.KHR)||num(cur.other?.USD)||num(cur.other?.KHR))rows.push(['➕ Other Earning','other']);
+
+  $('earningCompareRows').innerHTML=rows.map(([label,key])=>{
+    const p=prev[key]||{},n=cur[key]||{};
+    return '<tr><td>'+esc(label)+'</td><td>'+esc(earningPair(p))+'</td><td>'+esc(earningPair(n))+'</td><td>'+esc(signedPair({USD:num(n.USD)-num(p.USD),KHR:num(n.KHR)-num(p.KHR)}))+'</td></tr>';
+  }).join('');
+}
+function earningMeta(e){const b=[];if(e.sourceDate)b.push(formatDate(e.sourceDate));if(e.salaryMonth)b.push(monthLabel(e.salaryMonth));const locationName=earningLocationName(e);if(locationName)b.push(locationName);const s=e.snapshot||{};if(e.earningType==='SALES_INCENTIVE'&&s.dailySaleUSD!=null){b.push(`Sales ${money(s.dailySaleUSD,'USD')}`);if(s.incentiveRatePercent!=null)b.push(`Rate ${num(s.incentiveRatePercent).toFixed(2)}%`)}if(e.earningType==='SPECIAL_ALLOWANCE'){if(s.approvedLeaveDays!=null)b.push(`Approved Leave ${num(s.approvedLeaveDays)} day(s)`);if(num(e.deductionAmount)>0)b.push(`Deduction ${money(e.deductionAmount,e.currency)}`)}if(e.earningType==='MONTHLY_SALARY'&&num(e.deductionAmount)>0)b.push(`Advance Deduction ${money(e.deductionAmount,e.currency)}`);return b.join(' • ')}
 function renderAvailable(){const list=Array.isArray(paymentData?.available)?paymentData.available:[],usd=list.filter(x=>clean(x.currency||'USD').toUpperCase()==='USD').reduce((a,x)=>a+num(x.amount),0);$('availableCount').textContent=list.length.toLocaleString('en-US');$('availableUSD').textContent=money(usd,'USD');$('availableLabel').textContent=`${list.length} earning${list.length===1?'':'s'}`;if(!list.length)$('earningList').innerHTML='<div class="empty">No payment is available to request right now.</div>';else $('earningList').innerHTML=list.map(e=>readOnly()?`<div class="earning readonly"><div><div class="earning-title">${esc(earningName(e.earningType,e.sourceRole))}</div><div class="earning-meta">${esc(earningMeta(e)||'BIG BROTHER Staff Earning')}</div></div><div class="earning-amount"><strong>${esc(money(e.amount,e.currency))}</strong><span>${esc(e.currency||'USD')}</span></div></div>`:`<label class="earning"><input class="earning-check" type="checkbox" value="${Number(e.earningId)}" data-amount="${Number(e.amount)||0}" data-currency="${esc(clean(e.currency||'USD').toUpperCase())}"><div><div class="earning-title">${esc(earningName(e.earningType,e.sourceRole))}</div><div class="earning-meta">${esc(earningMeta(e)||'BIG BROTHER Staff Earning')}</div></div><div class="earning-amount"><strong>${esc(money(e.amount,e.currency))}</strong><span>${esc(e.currency||'USD')}</span></div></label>`).join('');document.querySelectorAll('.earning-check').forEach(x=>x.onchange=updateSelectedTotal);updateSelectedTotal();$('selectedTotal').parentElement.style.display=readOnly()?'none':''}
 function updateSelectedTotal(){const c=[...document.querySelectorAll('.earning-check:checked')];if(!c.length){$('selectedTotal').textContent='$0.00';return}const cur=[...new Set(c.map(x=>x.dataset.currency))];if(cur.length>1){$('selectedTotal').textContent='Multiple currencies';return}$('selectedTotal').textContent=money(c.reduce((a,x)=>a+num(x.dataset.amount),0),cur[0]||'USD')}
 function renderPending(){const r=Array.isArray(paymentData?.pendingPaymentRequests)?paymentData.pendingPaymentRequests:[];$('pendingRequestCount').textContent=r.length.toLocaleString('en-US');$('pendingPaymentRows').innerHTML=r.length?r.map(x=>`<tr><td><strong>${esc(x.requestNo)}</strong></td><td>${esc(formatDateTime(x.requestedAt))}</td><td>${(x.items||[]).map(i=>`<div>${esc(earningName(i.earningType,i.sourceRole))} — ${esc(money(i.amount,x.currency))}</div>`).join('')||'-'}</td><td class="money"><strong>${esc(money(x.requestedAmount,x.currency))}</strong></td><td>${statusBadge(x.status)}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">No pending payment request.</td></tr>'}
@@ -50,7 +149,7 @@ function paymentDetail(p){const d=p.detail||{};if(p.historyType==='SALARY_ADVANC
 function renderPaymentHistory(){$('historyCount').textContent=`${paymentHistory.length} record${paymentHistory.length===1?'':'s'}`;$('historyRows').innerHTML=paymentHistory.length?paymentHistory.map(p=>`<tr><td>${esc(formatDateTime(p.paidAt))}</td><td><strong>${esc(p.referenceNo)}</strong></td><td><span class="badge ${p.historyType==='SALARY_ADVANCE'?'purple':'blue'}">${esc(p.historyType==='SALARY_ADVANCE'?'SALARY ADVANCE':'STAFF PAYMENT')}</span></td><td>${esc(paymentDetail(p))}</td><td class="money"><strong>${esc(money(p.amount,p.currency||p.detail?.currency||'USD'))}</strong></td><td>${esc(p.expenseId||'-')}</td><td>${statusBadge(p.status)}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">No payment history yet.</td></tr>'}
 function renderLeaveHistory(){$('leaveHistoryCount').textContent=`${leaveHistory.length} record${leaveHistory.length===1?'':'s'}`;$('leaveHistoryRows').innerHTML=leaveHistory.length?leaveHistory.map(r=>`<tr><td><strong>${esc(r.requestNo)}</strong></td><td>${esc(formatDate(r.leaveFrom))}</td><td>${esc(formatDate(r.leaveTo))}</td><td>${esc(num(r.leaveDays).toLocaleString('en-US'))}</td><td>${esc(r.reason||'-')}</td><td>${statusBadge(r.status)}</td><td>${esc(r.adminNote||'-')}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">No Leave Request history yet.</td></tr>'}
 function renderAdvanceHistory(){$('advanceHistoryCount').textContent=`${advanceHistory.length} record${advanceHistory.length===1?'':'s'}`;$('advanceHistoryRows').innerHTML=advanceHistory.length?advanceHistory.map(r=>`<tr><td><strong>${esc(r.requestNo)}</strong></td><td>${esc(monthLabel(r.salaryMonth))}</td><td class="money">${esc(money(r.requestedAmount,r.currency))}</td><td class="money"><strong>${r.approvedAmount==null?'-':esc(money(r.approvedAmount,r.currency))}</strong></td><td>${esc(r.reason||'-')}</td><td>${statusBadge(r.status)}</td><td>${esc(r.adminNote||'-')}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">No Special Request history yet.</td></tr>'}
-function renderAll(){renderProfile();renderSalary();renderAvailable();renderPending();renderPaymentHistory();renderLeaveHistory();renderAdvanceHistory();$('leaveReadonlyNote').style.display=readOnly()?'':'none';$('advanceReadonlyNote').style.display=readOnly()?'':'none'}
+function renderAll(){renderProfile();renderSalary();renderEarningComparison();renderAvailable();renderPending();renderPaymentHistory();renderLeaveHistory();renderAdvanceHistory();$('leaveReadonlyNote').style.display=readOnly()?'':'none';$('advanceReadonlyNote').style.display=readOnly()?'':'none'}
 async function requestEarnings(ids){if(readOnly())throw new Error('Admin Staff View is read-only.');return rpc('bb_staff_relation_request_payment',{p_earning_ids:ids})}
 async function requestSelected(){const b=$('requestSelectedBtn');setStatus('paymentStatus','');const c=[...document.querySelectorAll('.earning-check:checked')];if(!c.length){setStatus('paymentStatus','Select at least one payment first.',true);return}const cur=[...new Set(c.map(x=>x.dataset.currency))];if(cur.length>1){setStatus('paymentStatus','Please request USD and KHR payments separately.',true);return}setBusy(b,true,'Requesting...');try{const r=await requestEarnings(c.map(x=>Number(x.value)));showToast(`${r.requestNo||'Payment'} requested successfully ✅`);setStatus('paymentStatus','Payment Request sent to Admin.');await loadAll(false)}catch(e){setStatus('paymentStatus',e?.message||e,true)}finally{setBusy(b,false)}}
 async function requestAll(){const b=$('requestAllBtn');setStatus('paymentStatus','');const a=Array.isArray(paymentData?.available)?paymentData.available:[];if(!a.length){setStatus('paymentStatus','No available payment to request.',true);return}const g={};a.forEach(e=>{const c=clean(e.currency||'USD').toUpperCase();(g[c]||(g[c]=[])).push(Number(e.earningId))});setBusy(b,true,'Requesting...');try{const refs=[];for(const c of Object.keys(g)){const r=await requestEarnings(g[c]);refs.push(r.requestNo||c)}showToast(`Payment Request sent ✅ ${refs.join(', ')}`);setStatus('paymentStatus','All available payments were requested.');await loadAll(false)}catch(e){setStatus('paymentStatus',e?.message||e,true)}finally{setBusy(b,false)}}
