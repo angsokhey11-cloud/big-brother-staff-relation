@@ -1,0 +1,484 @@
+/* BIG BROTHER Staff Relation PC workspace V1
+   Reuses mobile icon and compact payment language, sized for large displays.
+   Presentation-only, scoped so mobile Staff Relation remains unchanged. */
+body.bb-sr-desktop-v1{
+  background:#eef5fc;
+  color:#1d3550;
+  padding:14px 18px 24px;
+  min-width:0;
+}
+body.bb-sr-desktop-v1.embed{padding:10px 12px 25px}
+body.bb-sr-desktop-v1 .app{max-width:1510px;margin:0 auto;width:100%}
+body.bb-sr-desktop-v1 .hero,
+body.bb-sr-desktop-v1.embed .hero{
+  display:flex!important;align-items:center;justify-content:space-between;
+  gap:12px;padding:14px 18px;margin:0 0 11px;
+  background:linear-gradient(110deg,#f6fbff 0%,#e6f1ff 100%);
+  border:1px solid #cfdff0;border-radius:14px;
+  box-shadow:0 3px 12px rgba(28,66,103,.045);
+}
+body.bb-sr-desktop-v1 .bb-sr-hero-title{flex:1 1 auto;min-width:0}
+body.bb-sr-desktop-v1 .hero h1{
+  display:flex;align-items:center;gap:10px;margin:0;
+  color:#123f75;font-size:clamp(18px,1.55vw,23px);
+  font-weight:900;line-height:1.3;
+}
+body.bb-sr-desktop-v1 .hero p{
+  margin:3px 0 0 34px;color:#6b829a;font-size:11px;line-height:1.3;
+}
+body.bb-sr-desktop-v1 #profilePill,
+body.bb-sr-desktop-v1 .profile-card[hidden]{display:none!important}
+body.bb-sr-desktop-v1 .bb-sr-refresh{
+  display:flex!important;align-items:center;justify-content:center;gap:8px;
+  min-height:38px;min-width:112px;padding:8px 13px;
+  background:#fff!important;border:1px solid #bcd5f0!important;border-radius:10px;
+  color:#1464b1!important;font-size:12px;font-weight:850;
+}
+body.bb-sr-desktop-v1 .bb-sr-refresh:hover{background:#e9f4ff!important;border-color:#90c4f5!important}
+body.bb-sr-desktop-v1 .bb-sr-refresh:focus-visible,
+body.bb-sr-desktop-v1 button:focus-visible{
+  outline:2px solid #378fe1;outline-offset:2px;
+}
+body.bb-sr-desktop-v1 .bb-sr-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 auto;width:24px;height:24px;
+  color:#1267b0;
+}
+body.bb-sr-desktop-v1 .bb-sr-icon .bb-function-svg{
+  width:100%!important;height:100%!important;
+  color:inherit!important;
+}
+body.bb-sr-desktop-v1 .bb-sr-icon[data-bb-tone="teal"]{color:#078583}
+body.bb-sr-desktop-v1 .bb-sr-icon[data-bb-tone="indigo"]{color:#5157ac}
+body.bb-sr-desktop-v1 .bb-sr-icon[data-bb-tone="violet"]{color:#7b51b3}
+body.bb-sr-desktop-v1 .bb-sr-icon[data-bb-tone="amber"]{color:#b46c22}
+body.bb-sr-desktop-v1 .bb-sr-icon[data-bb-tone="green"]{color:#178860}
+body.bb-sr-desktop-v1 .hero h1 .bb-sr-icon{width:24px;height:24px}
+body.bb-sr-desktop-v1 .bb-sr-refresh .bb-sr-icon{width:19px;height:19px}
+
+/* Admin on-behalf workspace: clear selection and high-contrast mode controls. */
+body.bb-sr-desktop-v1 .admin-tools{
+  border:1px solid #d0dfef;border-radius:13px;
+  background:#fff;margin:0 0 11px;padding:12px 14px;
+  box-shadow:0 3px 14px rgba(28,61,95,.045);
+}
+body.bb-sr-desktop-v1 .admin-tools-row{
+  display:grid;grid-template-columns:minmax(220px,1.35fr) auto minmax(260px,1.12fr);
+  gap:14px;align-items:center;
+}
+body.bb-sr-desktop-v1 .admin-title{min-width:0}
+body.bb-sr-desktop-v1 .admin-title strong{
+  display:flex;align-items:center;gap:7px;font-size:12px;color:#184777;
+}
+body.bb-sr-desktop-v1 .admin-title strong .bb-sr-icon{width:19px;height:19px}
+body.bb-sr-desktop-v1 .admin-title>span{margin-top:4px;font-size:10px;line-height:1.4;color:#647e98}
+body.bb-sr-desktop-v1 .mode-switch{
+  display:flex;align-items:center;gap:5px;padding:3px;
+  border:1px solid #d5e5f3;border-radius:12px;background:#f2f7fc;
+}
+body.bb-sr-desktop-v1 .mode-btn{
+  min-width:112px;min-height:36px;border:1px solid transparent;
+  border-radius:9px;color:#3e5a7d;background:transparent;
+  font-size:11px;font-weight:850;
+}
+body.bb-sr-desktop-v1 .mode-btn.active,
+body.bb-sr-desktop-v1 .mode-btn[aria-pressed="true"]{
+  background:#1267b0!important;border-color:#1267b0!important;
+  color:#fff!important;-webkit-text-fill-color:#fff!important;
+  box-shadow:0 2px 7px rgba(28,97,169,.12);
+}
+body.bb-sr-desktop-v1 .admin-select-wrap{min-width:0}
+body.bb-sr-desktop-v1 .admin-select-wrap label{
+  font-size:9px;letter-spacing:.2px;margin-bottom:5px;
+}
+body.bb-sr-desktop-v1 .admin-select-wrap select{
+  min-height:39px;border:1px solid #c6d8ec;
+  border-radius:10px;padding:7px 11px;
+  font-size:12px;font-weight:650;color:#234766;
+  outline:none;
+}
+body.bb-sr-desktop-v1 .admin-select-wrap select:focus{
+  box-shadow:0 0 0 3px rgba(52,145,231,.12);
+  border-color:#71b2e5;
+}
+body.bb-sr-desktop-v1 .readonly-banner{
+  margin-top:11px;padding:9px 12px;
+  border:1px solid #dae6f3;border-radius:9px;
+  background:#f5f9fe;color:#526c84;font-size:10px;line-height:1.5;
+}
+
+/* Five familiar function tabs, full desktop width. */
+body.bb-sr-desktop-v1 .nav{
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:9px;padding:0;margin:0 0 12px;
+}
+body.bb-sr-desktop-v1 .nav .nav-btn{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;min-width:0;min-height:54px;
+  background:#fff;border:1px solid #d5e3f2;border-radius:12px;
+  color:#3b5f84;padding:9px 12px;font-size:12px;
+  font-weight:800;line-height:1.2;
+  text-align:center;white-space:nowrap;
+  box-shadow:0 2px 8px rgba(32,69,106,.04);
+}
+body.bb-sr-desktop-v1 .nav .nav-btn:hover{
+  border-color:#a5c7e8;background:#f5fbff;
+}
+body.bb-sr-desktop-v1 .nav .nav-btn.active{
+  border-color:#9dc8f3;background:#e7f3ff;color:#1767ae;
+  box-shadow:inset 0 0 0 1px #d7eafa;
+}
+body.bb-sr-desktop-v1 .nav .nav-btn .bb-sr-icon{width:22px;height:22px}
+body.bb-sr-desktop-v1 .nav .nav-btn.active .bb-sr-icon{color:#166ed1}
+
+/* Four overview cards, each using desktop space horizontally. */
+body.bb-sr-desktop-v1 .summary-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;margin:0 0 12px;
+}
+body.bb-sr-desktop-v1 .summary-card{
+  display:grid;grid-template-columns:39px minmax(0,1fr);
+  grid-template-rows:auto auto auto;align-content:center;
+  column-gap:11px;min-height:107px;
+  padding:13px 15px;border:1px solid #d8e5f2;
+  border-radius:13px;background:#fff;
+  box-shadow:0 3px 13px rgba(26,69,103,.042);
+}
+body.bb-sr-desktop-v1 .summary-card>.bb-sr-icon{
+  grid-column:1;grid-row:1/4;
+  align-self:center;width:38px;height:38px;padding:8px;
+  background:#e7f2ff;border:1px solid #d7eafe;border-radius:11px;
+}
+body.bb-sr-desktop-v1 .summary-card>.bb-sr-icon[data-bb-tone="teal"]{
+  background:#e4f7f2;border-color:#d2eee8;
+}
+body.bb-sr-desktop-v1 .summary-card>.bb-sr-icon[data-bb-tone="amber"]{
+  background:#fff5e7;border-color:#f7e8d3;
+}
+body.bb-sr-desktop-v1 .summary-card>.bb-sr-icon[data-bb-tone="violet"]{
+  background:#f3effb;border-color:#e9e0f6;
+}
+body.bb-sr-desktop-v1 .summary-card small{
+  grid-column:2;grid-row:1;
+  color:#607b93;font-size:10px;font-weight:750;letter-spacing:0;
+  text-transform:none;
+}
+body.bb-sr-desktop-v1 .summary-card strong{
+  grid-column:2;grid-row:2;margin:3px 0 0;color:#143f70;
+  font-size:clamp(19px,1.62vw,24px);font-variant-numeric:tabular-nums;
+}
+body.bb-sr-desktop-v1 .summary-card .sub{
+  grid-column:2;grid-row:3;margin:3px 0 0;color:#8093a7;font-size:9px;
+}
+
+/* Salary + earning comparison on the same PC workspace row. */
+body.bb-sr-desktop-v1 .bb-sr-salary-workspace{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:start;gap:12px;margin:0 0 12px;
+}
+body.bb-sr-desktop-v1 .bb-sr-salary-workspace:not(:has(.earning-compare-card)){
+  grid-template-columns:1fr;
+}
+body.bb-sr-desktop-v1 .salary-card,
+body.bb-sr-desktop-v1 .earning-compare-card{
+  margin:0!important;min-width:0;
+  border:1px solid #d6e4f2;border-radius:13px;
+  box-shadow:0 3px 13px rgba(27,63,99,.045);
+}
+body.bb-sr-desktop-v1 .salary-head,
+body.bb-sr-desktop-v1 .earning-compare-card .card-head{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:12px 14px!important;
+  min-height:52px;border-bottom:1px solid #e3ebf4;
+  background:#f8fbff;
+}
+body.bb-sr-desktop-v1 .salary-head strong,
+body.bb-sr-desktop-v1 .earning-compare-card .card-head strong{
+  display:flex;align-items:center;gap:8px;
+  color:#184675;font-size:13px;line-height:1.3;
+}
+body.bb-sr-desktop-v1 .salary-head strong>.bb-sr-icon,
+body.bb-sr-desktop-v1 .earning-compare-card .card-head strong>.bb-sr-icon{
+  width:21px;height:21px;
+}
+body.bb-sr-desktop-v1 .bb-sr-salary-period{
+  display:flex;align-items:center;justify-content:flex-end;
+  gap:7px;white-space:nowrap;font-size:11px;color:#5d7690;
+}
+body.bb-sr-desktop-v1 .bb-sr-salary-period .salary-lock{
+  margin:0;padding:5px 8px;font-size:8px;
+}
+body.bb-sr-desktop-v1 .salary-body{
+  grid-template-columns:repeat(4,minmax(0,1fr));min-height:108px;
+}
+body.bb-sr-desktop-v1 .salary-stat{
+  min-width:0;padding:18px 10px;
+}
+body.bb-sr-desktop-v1 .salary-stat small{
+  color:#637e96;font-size:9px;letter-spacing:0;
+  text-transform:none;
+}
+body.bb-sr-desktop-v1 .salary-stat strong{
+  margin-top:9px;color:#174777;font-size:clamp(13px,1.2vw,18px);
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-body{
+  padding:10px 12px!important;
+}
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-totals{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;margin:0!important;
+}
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-total{
+  padding:9px 10px!important;border-radius:10px;min-width:0;
+}
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-total small{
+  font-size:9px!important;letter-spacing:0!important;text-transform:none!important;
+}
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-total strong{
+  font-size:clamp(14px,1.16vw,17px)!important;margin-top:5px!important;
+  overflow-wrap:anywhere;font-variant-numeric:tabular-nums;
+}
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-total span{
+  font-size:9px!important;
+}
+body.bb-sr-desktop-v1 .earning-compare-card #earningCompareRange{display:none!important}
+body.bb-sr-desktop-v1 .bb-sr-compare-toggle{
+  flex:0 0 auto;border:1px solid #cee0f1;border-radius:8px;
+  background:#e9f3ff;color:#196ab2;font-size:10px;
+  font-weight:850;padding:8px 10px;
+}
+body.bb-sr-desktop-v1 .bb-sr-compare-toggle:hover{background:#dcebff}
+body.bb-sr-desktop-v1 .earning-compare-card:not(.bb-sr-compare-expanded) .earning-compare-table-wrap,
+body.bb-sr-desktop-v1 .earning-compare-card:not(.bb-sr-compare-expanded) .earning-compare-note{
+  display:none!important;
+}
+body.bb-sr-desktop-v1 .earning-compare-card.bb-sr-compare-expanded .earning-compare-table-wrap{
+  display:block;margin-top:11px;
+}
+body.bb-sr-desktop-v1 .earning-compare-card.bb-sr-compare-expanded .earning-compare-note{
+  display:block;
+}
+body.bb-sr-desktop-v1 .earning-compare-table td:first-child .bb-sr-icon{
+  width:16px;height:16px;margin-right:5px;vertical-align:middle;
+}
+body.bb-sr-desktop-v1 .earning-compare-table{min-width:460px!important}
+
+/* Category-first payment list: one transaction source per flat row. */
+body.bb-sr-desktop-v1 .card{
+  border-color:#d6e4f2;border-radius:13px;
+  box-shadow:0 3px 13px rgba(25,61,99,.045);
+}
+body.bb-sr-desktop-v1 .card-head{
+  padding:13px 17px;background:#f8fbff;
+  border-bottom:1px solid #e3ebf4;
+}
+body.bb-sr-desktop-v1 .card-head strong{
+  display:flex;gap:8px;align-items:center;color:#174575;font-size:13px;
+}
+body.bb-sr-desktop-v1 .card-head strong>.bb-sr-icon{width:22px;height:22px}
+body.bb-sr-desktop-v1 .card-head span{font-size:10px;color:#72889b}
+body.bb-sr-desktop-v1 .card-body{padding:12px 15px}
+body.bb-sr-desktop-v1 .earning-list{
+  display:flex;flex-direction:column;gap:10px;min-width:0;
+}
+body.bb-sr-desktop-v1 .bb-sr-payment-group{
+  display:block;min-width:0;width:100%;
+  border:1px solid #dae6f2;border-radius:12px;overflow:hidden;
+  background:#fff;
+}
+body.bb-sr-desktop-v1 .bb-sr-payment-group-head{
+  display:flex;align-items:center;gap:9px;
+  min-height:42px;padding:10px 15px;
+  background:#eff6fe;border-bottom:1px solid #dce8f5;
+}
+body.bb-sr-desktop-v1 .bb-sr-payment-group-head .bb-sr-icon{width:19px;height:19px}
+body.bb-sr-desktop-v1 .bb-sr-payment-group-head strong{
+  flex:1 1 auto;min-width:0;
+  color:#164c7e;font-size:12px;font-weight:900;
+}
+body.bb-sr-desktop-v1 .bb-sr-payment-count{
+  color:#7389a0;font-size:10px;font-weight:750;
+}
+body.bb-sr-desktop-v1 .bb-sr-payment-category-amount{
+  margin-left:8px;color:#174f83;font-size:12px;
+  font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+body.bb-sr-desktop-v1 .bb-sr-payment-group-rows{display:block;width:100%}
+body.bb-sr-desktop-v1 #earningList .earning{
+  display:grid;grid-template-columns:25px minmax(0,1fr) auto;
+  min-height:51px;align-items:center;gap:14px;
+  width:100%;margin:0;padding:8px 15px;
+  border:0;border-bottom:1px solid #e9eff7;
+  border-radius:0;background:#fff;
+}
+body.bb-sr-desktop-v1 #earningList .earning:last-child{border-bottom:0}
+body.bb-sr-desktop-v1 #earningList .earning:nth-child(even){background:#fbfdff}
+body.bb-sr-desktop-v1 #earningList .earning:has(.earning-check:checked){
+  background:#ecf6ff;
+}
+body.bb-sr-desktop-v1 #earningList .earning:hover{background:#f1f8ff}
+body.bb-sr-desktop-v1 #earningList .earning-check{
+  width:17px;height:17px;accent-color:#136ac1;margin:0;
+}
+body.bb-sr-desktop-v1 #earningList .earning>div:not(.earning-amount){min-width:0}
+body.bb-sr-desktop-v1 #earningList .earning-title{
+  display:flex;align-items:center;gap:6px;
+  color:#275884;font-size:11px;line-height:1.3;
+}
+body.bb-sr-desktop-v1 #earningList .earning-title .bb-sr-icon{
+  width:15px;height:15px;
+}
+body.bb-sr-desktop-v1 #earningList .earning.bb-sr-payment-simple .earning-title{
+  display:none;
+}
+body.bb-sr-desktop-v1 #earningList .earning-meta{
+  font-size:11px;color:#556f88;line-height:1.45;
+  margin:0;overflow-wrap:anywhere;
+}
+body.bb-sr-desktop-v1 #earningList .earning:not(.bb-sr-payment-simple) .earning-meta{
+  margin-top:3px;font-size:10px;
+}
+body.bb-sr-desktop-v1 #earningList .earning-amount{
+  min-width:135px;grid-column:3;text-align:right;
+}
+body.bb-sr-desktop-v1 #earningList .earning-amount strong{
+  color:#164372;font-size:14px;font-variant-numeric:tabular-nums;
+}
+body.bb-sr-desktop-v1 #earningList .earning-amount span{font-size:9px}
+body.bb-sr-desktop-v1 #earningList .earning.readonly{
+  grid-template-columns:minmax(0,1fr) auto;
+}
+body.bb-sr-desktop-v1 #earningList .earning.readonly .earning-amount{grid-column:2}
+body.bb-sr-desktop-v1 #earningList .empty{padding:18px!important}
+body.bb-sr-desktop-v1 .actions-row{
+  margin:10px 0 0;padding:13px 4px 2px;
+}
+body.bb-sr-desktop-v1 .selected-total{font-size:11px;color:#6b829b}
+body.bb-sr-desktop-v1 .selected-total strong{
+  display:inline-block;margin-left:7px;color:#15487d;
+  font-size:17px;font-variant-numeric:tabular-nums;
+}
+body.bb-sr-desktop-v1 .action-buttons{gap:9px}
+body.bb-sr-desktop-v1 .action-buttons button{
+  min-width:150px;min-height:39px;border-radius:9px;
+  font-size:11px;
+}
+body.bb-sr-desktop-v1 .primary-btn{background:#1769b7;color:#fff}
+body.bb-sr-desktop-v1 .primary-btn:hover{background:#0f5596}
+body.bb-sr-desktop-v1 .success-btn{
+  background:#e4f5ed;color:#13784d;border:1px solid #bee6d2;
+}
+body.bb-sr-desktop-v1 .success-btn:hover{background:#d4f0e3}
+body.bb-sr-desktop-v1 #page-payment .bb-sr-hidden-empty{display:none}
+body.bb-sr-desktop-v1 .bb-sr-about-earnings{
+  background:#fff;border:1px solid #dbe7f3;
+  border-radius:11px;padding:9px 13px;margin:0 0 10px;
+}
+body.bb-sr-desktop-v1 .bb-sr-about-earnings summary{
+  cursor:pointer;font-size:11px;font-weight:850;color:#3a6d9b;
+}
+body.bb-sr-desktop-v1 .bb-sr-about-earnings .note{
+  margin-top:10px;border:0;padding:0;background:transparent;
+  font-size:10px;
+}
+
+/* Compact Payment History, mirroring the mobile interaction at PC text sizes. */
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-line{
+  display:grid!important;
+  grid-template-columns:minmax(145px,1fr) minmax(95px,.9fr) auto 23px!important;
+  gap:13px!important;min-height:54px!important;
+  padding:10px 17px!important;
+}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-date{
+  font-size:12px!important;letter-spacing:0;
+}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-method{font-size:11px!important}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-amount{font-size:14px!important}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-details{
+  padding:12px 17px!important;
+}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-category-total strong{
+  font-size:12px!important;
+}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-category-total b{font-size:12px!important}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-source-copy strong{font-size:11px!important}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-source-copy small{font-size:10px!important}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-source-money{font-size:12px!important}
+body.bb-sr-desktop-v1 #page-history .bb-sr-history-references{font-size:10px!important}
+
+/* Full-width tables for histories; forms use PC columns. */
+body.bb-sr-desktop-v1 table{min-width:720px}
+body.bb-sr-desktop-v1 table th{padding:12px 11px;font-size:10px;background:#f6faff}
+body.bb-sr-desktop-v1 table td{padding:12px 11px;font-size:11px}
+body.bb-sr-desktop-v1 #page-history .table-wrap table{min-width:0!important}
+body.bb-sr-desktop-v1 .grid-2{
+  grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:13px;
+}
+body.bb-sr-desktop-v1 .field label{
+  font-size:10px;letter-spacing:.2px;
+}
+body.bb-sr-desktop-v1 .field input,
+body.bb-sr-desktop-v1 .field textarea{
+  min-height:43px;border:1px solid #cbddef;
+}
+body.bb-sr-desktop-v1 .field textarea{min-height:96px}
+body.bb-sr-desktop-v1 .info-mini strong{font-size:16px}
+body.bb-sr-desktop-v1 .info-box strong{font-size:17px}
+body.bb-sr-desktop-v1 .note{font-size:11px}
+body.bb-sr-desktop-v1 .status-line{font-size:11px}
+
+/* Dynamic comparison overrides are loaded after this file by the controller. */
+body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-note{line-height:1.5}
+
+/* Responsiveness when desktop modules open in smaller windows. */
+@media(max-width:1180px){
+  body.bb-sr-desktop-v1 .admin-tools-row{
+    grid-template-columns:minmax(190px,1fr) minmax(215px,1fr);
+  }
+  body.bb-sr-desktop-v1 .admin-title{grid-column:1/-1}
+  body.bb-sr-desktop-v1 .mode-switch{justify-self:start}
+  body.bb-sr-desktop-v1 .nav .nav-btn{font-size:11px;gap:6px}
+  body.bb-sr-desktop-v1 .summary-card{padding:11px 10px;column-gap:7px}
+  body.bb-sr-desktop-v1 .salary-stat{padding:14px 7px}
+}
+@media(max-width:970px){
+  body.bb-sr-desktop-v1 .bb-sr-salary-workspace{grid-template-columns:1fr}
+  body.bb-sr-desktop-v1 .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.bb-sr-desktop-v1 .nav{grid-template-columns:repeat(5,minmax(0,1fr))}
+  body.bb-sr-desktop-v1 .nav .nav-btn{
+    flex-direction:column;white-space:normal;font-size:10px;
+    gap:4px;min-height:60px;
+  }
+  body.bb-sr-desktop-v1 .grid-2{grid-template-columns:1fr}
+}
+@media(max-width:690px){
+  body.bb-sr-desktop-v1{padding:8px}
+  body.bb-sr-desktop-v1 .hero,body.bb-sr-desktop-v1.embed .hero{padding:11px}
+  body.bb-sr-desktop-v1 .hero h1{font-size:16px}
+  body.bb-sr-desktop-v1 .hero p{margin-left:0;font-size:9px}
+  body.bb-sr-desktop-v1 .bb-sr-refresh{min-width:40px;font-size:0;gap:0}
+  body.bb-sr-desktop-v1 .admin-tools-row{grid-template-columns:1fr;gap:9px}
+  body.bb-sr-desktop-v1 .admin-title{grid-column:auto}
+  body.bb-sr-desktop-v1 .nav{gap:4px}
+  body.bb-sr-desktop-v1 .nav .nav-btn{font-size:8px;padding:7px 3px;gap:3px}
+  body.bb-sr-desktop-v1 .nav .nav-btn .bb-sr-icon{width:18px;height:18px}
+  body.bb-sr-desktop-v1 .summary-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  body.bb-sr-desktop-v1 .summary-card{
+    display:flex;flex-direction:column;gap:3px;min-height:110px;padding:7px 5px;
+  }
+  body.bb-sr-desktop-v1 .summary-card>.bb-sr-icon{width:24px;height:24px;padding:3px}
+  body.bb-sr-desktop-v1 .summary-card small{font-size:8px}
+  body.bb-sr-desktop-v1 .summary-card strong{font-size:14px}
+  body.bb-sr-desktop-v1 .summary-card .sub{display:none}
+  body.bb-sr-desktop-v1 .salary-body{grid-template-columns:repeat(4,minmax(0,1fr))}
+  body.bb-sr-desktop-v1 .salary-stat{min-width:0;padding:9px 5px}
+  body.bb-sr-desktop-v1 .salary-stat strong{font-size:12px}
+  body.bb-sr-desktop-v1 .salary-stat small{font-size:8px}
+  body.bb-sr-desktop-v1 #earningList .earning{gap:6px;padding:7px 8px}
+  body.bb-sr-desktop-v1 #earningList .earning-amount{min-width:70px}
+  body.bb-sr-desktop-v1 .bb-sr-payment-group-head{padding:8px}
+  body.bb-sr-desktop-v1 .bb-sr-payment-count{font-size:8px}
+  body.bb-sr-desktop-v1 .bb-sr-payment-category-amount{font-size:10px}
+  body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-totals{gap:4px!important}
+}
