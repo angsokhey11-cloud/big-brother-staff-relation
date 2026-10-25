@@ -416,6 +416,12 @@ body.bb-sr-mobile-v2 #page-payment .bb-sr-about-earnings .note{
   font-size:9px!important;
   border:0;background:none;padding:0!important;
 }
+/* Critical: Admin View is READ ONLY; this overrides the mobile action-grid
+   display rules so request buttons never reappear for an Admin reviewer. */
+body.bb-sr-mobile-v2.admin-readonly .action-buttons,
+body.bb-sr-mobile-v2.admin-readonly .form-actions {
+  display:none!important;
+}
 /* Other staff pages keep all their existing forms and history fields. */
 body.bb-sr-mobile-v2 .grid-2{gap:8px!important}
 body.bb-sr-mobile-v2 .admin-tools{padding:8px!important;margin-bottom:8px!important}
