@@ -131,10 +131,12 @@
   function updateToast(){
     var el=document.getElementById('toast');
     if(!el||el.hidden)return;
-    var label=cleanLabel(el.textContent);
-    if(label===el.textContent)return;
+    var original=String(el.textContent||'');
+    var isSuccess=!el.classList.contains('error')&&/✅\s*$/u.test(original);
+    var label=cleanLabel(original).replace(/\s*✅\s*$/u,'').trim();
+    if(label===original)return;
     el.textContent=label;
-    if(!el.classList.contains('error'))el.prepend(icon('circle-check','teal'));
+    if(isSuccess)el.prepend(icon('circle-check','teal'));
   }
   function renderPayments(earnings){
     var list=document.getElementById('earningList');
