@@ -1,0 +1,431 @@
+/* BIG BROTHER Staff Relation — compact mobile-only layout V2
+   Desktop index.html and all payment/request logic remain unchanged.
+   Horizontal rows are intentional; narrow screens swipe rather than stack. */
+body.bb-sr-mobile-v2 {
+  padding: 7px !important;
+  background: #eef5fc !important;
+  overflow-x: hidden;
+}
+body.bb-sr-mobile-v2 .app { max-width:760px !important; padding:0 !important; }
+body.bb-sr-mobile-v2 .hero,
+body.bb-sr-mobile-v2.embed .hero {
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:nowrap!important;
+  justify-content:space-between!important;
+  gap:7px!important;
+  margin:0 0 8px!important;
+  border-radius:11px!important;
+  background:transparent;
+  padding:6px 3px 7px!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-hero-title { min-width:0; flex:1 1 auto; }
+body.bb-sr-mobile-v2 .hero h1 {
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  font-size:clamp(14px,3.7vw,19px)!important;
+  line-height:1.23!important;
+  white-space:normal!important;
+  letter-spacing:-.35px;
+  margin:0!important;
+}
+body.bb-sr-mobile-v2 .hero p {
+  font-size:9px!important;
+  line-height:1.3!important;
+  margin-top:2px!important;
+  color:#6e8094!important;
+}
+body.bb-sr-mobile-v2 #profilePill,
+body.bb-sr-mobile-v2 .profile-card[hidden]{display:none!important}
+body.bb-sr-mobile-v2 .bb-sr-refresh{
+  flex:0 0 auto;
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  width:39px;
+  height:37px;
+  min-height:37px;
+  border:1px solid #c6dbee;
+  border-radius:11px!important;
+  background:#eaf4ff;
+  padding:4px!important;
+  font-size:0!important; /* shared renderer updates text; button remains icon-only */
+  color:#1267b0!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-refresh .bb-sr-icon {width:21px;height:21px}
+body.bb-sr-mobile-v2 .bb-sr-refresh .bb-sr-icon .bb-function-svg{width:21px;height:21px}
+body.bb-sr-mobile-v2 .bb-sr-refresh:focus-visible,
+body.bb-sr-mobile-v2 button:focus-visible,
+body.bb-sr-mobile-v2 summary:focus-visible {outline:2px solid #2688e8;outline-offset:2px}
+
+/* Same SVG construction and line weight as BIG BROTHER MobileFunctionIconsV1 */
+body.bb-sr-mobile-v2 .bb-sr-icon{
+  display:inline-flex;
+  flex:0 0 auto;
+  width:22px;
+  height:22px;
+  align-items:center;
+  justify-content:center;
+  color:#1267b0;
+}
+body.bb-sr-mobile-v2 .bb-sr-icon .bb-function-svg{
+  display:block;
+  color:inherit!important;
+  width:100%;
+  height:100%;
+}
+body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="teal"]{color:#008a80}
+body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="indigo"]{color:#4f56ad}
+body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="violet"]{color:#7a50b5}
+body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="amber"]{color:#b66f24}
+body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="green"]{color:#159664}
+
+/* Five functions, always ONE row. */
+body.bb-sr-mobile-v2 .nav{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:5px!important;
+  margin:0 0 8px!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+body.bb-sr-mobile-v2 .nav .nav-btn,
+body.bb-sr-mobile-v2 .nav .nav-btn:last-child{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  grid-column:auto!important;
+  min-width:0!important;
+  min-height:61px!important;
+  width:100%!important;
+  border-radius:10px!important;
+  gap:4px!important;
+  padding:7px 3px!important;
+  white-space:normal!important;
+  font-size:clamp(8px,2.18vw,10px)!important;
+  line-height:1.19!important;
+  text-align:center!important;
+  color:#355273!important;
+}
+body.bb-sr-mobile-v2 .nav .nav-btn .bb-sr-icon{
+  width:22px;height:22px;
+}
+body.bb-sr-mobile-v2 .nav .nav-btn.active{
+  border-color:#b7d7f6!important;
+  color:#0963ba!important;
+  background:#e4f2ff!important;
+  box-shadow:inset 0 0 0 1px #d9ebff;
+}
+body.bb-sr-mobile-v2 .nav .nav-btn.active .bb-sr-icon{color:#066ee1}
+body.bb-sr-mobile-v2 .nav .nav-btn>span:last-child{min-width:0;overflow-wrap:normal}
+
+/* Four KPI cards, one row. */
+body.bb-sr-mobile-v2 .summary-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:5px!important;
+  margin:0 0 8px!important;
+}
+body.bb-sr-mobile-v2 .summary-grid .summary-card{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:0;
+  min-width:0!important;
+  min-height:102px;
+  padding:8px 6px!important;
+  border-radius:11px!important;
+  background:#fff;
+  overflow:hidden;
+}
+body.bb-sr-mobile-v2 .summary-grid .bb-sr-icon {width:19px;height:19px;margin-bottom:5px}
+body.bb-sr-mobile-v2 .summary-grid .summary-card small{
+  min-height:19px;
+  font-size:clamp(7.2px,1.98vw,9px)!important;
+  line-height:1.14!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+  overflow-wrap:anywhere;
+  color:#536e8d!important;
+}
+body.bb-sr-mobile-v2 .summary-grid .summary-card strong{
+  margin-top:3px!important;
+  font-size:clamp(13px,3.4vw,17px)!important;
+  line-height:1.15!important;
+  white-space:nowrap;
+  color:#123a68!important;
+}
+body.bb-sr-mobile-v2 .summary-grid .summary-card .sub{
+  margin-top:4px!important;
+  font-size:clamp(6.7px,1.78vw,8px)!important;
+  line-height:1.2!important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* Four salary facts, one row, status in the salary header. */
+body.bb-sr-mobile-v2 .salary-card{margin-bottom:8px!important;border-radius:11px!important}
+body.bb-sr-mobile-v2 .salary-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:6px!important;
+  padding:9px 10px!important;
+}
+body.bb-sr-mobile-v2 .salary-head strong,
+body.bb-sr-mobile-v2 .card-head strong{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  font-size:12px!important;
+  color:#173f77!important;
+  line-height:1.25!important;
+}
+body.bb-sr-mobile-v2 .salary-head strong .bb-sr-icon,
+body.bb-sr-mobile-v2 .card-head strong .bb-sr-icon{width:20px;height:20px}
+body.bb-sr-mobile-v2 .bb-sr-salary-period{
+  display:flex;align-items:center;justify-content:flex-end;gap:5px;
+  color:#667e97;font-size:9px;white-space:nowrap;
+}
+body.bb-sr-mobile-v2 .bb-sr-salary-period .salary-lock{
+  margin:0!important;padding:4px 6px!important;font-size:7px!important;
+}
+body.bb-sr-mobile-v2 .salary-body{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:0!important;
+}
+body.bb-sr-mobile-v2 .salary-body .salary-stat{
+  min-width:0!important;
+  padding:10px 6px!important;
+  border-bottom:0!important;
+  border-right:1px solid #e3eaf3!important;
+}
+body.bb-sr-mobile-v2 .salary-body .salary-stat:last-child{border-right:0!important}
+body.bb-sr-mobile-v2 .salary-stat small{
+  font-size:clamp(7px,1.9vw,8.5px)!important;
+  text-transform:none!important;
+  line-height:1.15!important;
+  overflow-wrap:anywhere;
+}
+body.bb-sr-mobile-v2 .salary-stat strong{
+  font-size:clamp(10px,2.7vw,14px)!important;
+  margin-top:5px!important;
+  line-height:1.18!important;
+  overflow-wrap:anywhere!important;
+}
+
+/* Comparison: 3 summary values in one row, detailed table on demand. */
+body.bb-sr-mobile-v2 .earning-compare-card{margin-bottom:8px!important}
+body.bb-sr-mobile-v2 .earning-compare-body{padding:8px!important}
+body.bb-sr-mobile-v2 .earning-compare-card .card-head{
+  display:flex;gap:5px;align-items:center;padding:9px 10px!important;
+}
+body.bb-sr-mobile-v2 .earning-compare-card .card-head strong{
+  font-size:11px!important;flex:1 1 auto;
+}
+body.bb-sr-mobile-v2 .earning-compare-card #earningCompareRange{
+  display:none!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-compare-toggle{
+  border:1px solid #cfe0f3;
+  border-radius:8px;
+  background:#eef6ff;
+  color:#2368b0;
+  font-size:9px;
+  font-weight:800;
+  padding:5px 8px;
+  white-space:nowrap;
+}
+body.bb-sr-mobile-v2 .earning-compare-card .earning-compare-totals{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:5px!important;
+  margin:0!important;
+}
+body.bb-sr-mobile-v2 .earning-compare-card .earning-compare-total{
+  min-width:0;
+  padding:8px 6px!important;
+  border-radius:9px!important;
+}
+body.bb-sr-mobile-v2 .earning-compare-total small{
+  font-size:clamp(7px,1.9vw,8.5px)!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+  line-height:1.15;
+}
+body.bb-sr-mobile-v2 .earning-compare-total strong{
+  font-size:clamp(13px,3.4vw,17px)!important;
+  line-height:1.2;
+  margin-top:4px!important;
+  overflow-wrap:anywhere;
+}
+body.bb-sr-mobile-v2 .earning-compare-total span{
+  font-size:7px!important;line-height:1.15!important;
+  white-space:normal;
+}
+body.bb-sr-mobile-v2 .earning-compare-card:not(.bb-sr-compare-expanded) .earning-compare-table-wrap,
+body.bb-sr-mobile-v2 .earning-compare-card:not(.bb-sr-compare-expanded) .earning-compare-note{
+  display:none!important;
+}
+body.bb-sr-mobile-v2 .earning-compare-card.bb-sr-compare-expanded .earning-compare-table-wrap{margin-top:8px}
+body.bb-sr-mobile-v2 .earning-compare-table td:first-child .bb-sr-icon{
+  width:15px;height:15px;margin-right:5px;vertical-align:middle;
+}
+
+/* Available payments: horizontally swipe cards; no vertical five-item stack. */
+body.bb-sr-mobile-v2 .card{border-radius:11px!important;margin-bottom:8px!important}
+body.bb-sr-mobile-v2 .card-head{padding:9px 10px!important;min-width:0;align-items:center!important}
+body.bb-sr-mobile-v2 .card-head span{font-size:8px!important}
+body.bb-sr-mobile-v2 .bb-sr-head-actions{
+  display:flex;align-items:center;gap:6px;flex:0 0 auto;
+}
+body.bb-sr-mobile-v2 .bb-sr-head-actions button{
+  border:0;border-radius:8px;padding:7px 8px;
+  background:#e9f3ff;color:#1766b6;font-weight:800;font-size:9px;
+}
+body.bb-sr-mobile-v2 .card-body{padding:8px!important}
+body.bb-sr-mobile-v2 #earningList{
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  gap:7px!important;
+  width:100%;
+  padding:1px 1px 7px;
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+}
+body.bb-sr-mobile-v2 #earningList .earning{
+  flex:0 0 clamp(166px,53vw,213px);
+  min-width:0!important;
+  min-height:101px;
+  scroll-snap-align:start;
+  padding:9px!important;
+  gap:5px 7px!important;
+  border-radius:10px!important;
+  display:grid!important;
+  grid-template-columns:19px minmax(0,1fr)!important;
+  align-content:start;
+  align-items:center;
+}
+body.bb-sr-mobile-v2 #earningList .earning.readonly{
+  grid-template-columns:1fr!important;
+}
+body.bb-sr-mobile-v2 #earningList .earning-check{
+  width:17px!important;height:17px!important;
+  accent-color:#146bd3;
+}
+body.bb-sr-mobile-v2 #earningList .earning-title{
+  display:flex;align-items:center;gap:5px;
+  font-size:10px!important;line-height:1.2;
+}
+body.bb-sr-mobile-v2 #earningList .earning-title .bb-sr-icon{width:15px;height:15px}
+body.bb-sr-mobile-v2 #earningList .earning-meta{
+  font-size:8px!important;
+  line-height:1.25!important;
+  margin-top:4px!important;
+  overflow-wrap:anywhere;
+}
+body.bb-sr-mobile-v2 #earningList .earning-amount,
+body.bb-sr-mobile-v2 #earningList .earning.readonly .earning-amount{
+  grid-column:2!important;
+  text-align:left!important;
+  min-width:0!important;
+}
+body.bb-sr-mobile-v2 #earningList .earning.readonly .earning-amount{grid-column:1!important}
+body.bb-sr-mobile-v2 #earningList .earning-amount strong{font-size:13px!important}
+body.bb-sr-mobile-v2 #earningList .earning-amount span{font-size:7px!important}
+body.bb-sr-mobile-v2 #earningList .empty{min-width:100%;padding:13px 5px!important;font-size:10px!important}
+body.bb-sr-mobile-v2 #page-payment.bb-sr-all-earnings #earningList{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  overflow:visible!important;
+  scroll-snap-type:none;
+}
+body.bb-sr-mobile-v2 #page-payment.bb-sr-all-earnings #earningList .earning{
+  width:100%!important;min-height:65px!important;
+  max-width:none!important;
+  display:grid!important;
+  grid-template-columns:19px minmax(0,1fr) auto!important;
+}
+body.bb-sr-mobile-v2 #page-payment.bb-sr-all-earnings #earningList .earning-amount{
+  grid-column:3!important;text-align:right!important;
+}
+body.bb-sr-mobile-v2 #page-payment.bb-sr-all-earnings #earningList .earning.readonly .earning-amount{
+  grid-column:3!important;
+}
+body.bb-sr-mobile-v2 #page-payment.bb-sr-all-earnings #earningList .earning.readonly{
+  grid-template-columns:minmax(0,1fr) auto!important;
+}
+body.bb-sr-mobile-v2 #page-payment.bb-sr-all-earnings #earningList .earning.readonly .earning-amount{
+  grid-column:2!important;
+}
+body.bb-sr-mobile-v2 .actions-row{
+  display:grid!important;
+  grid-template-columns:minmax(77px,.75fr) minmax(0,2.3fr)!important;
+  align-items:center!important;
+  gap:6px!important;
+  margin-top:3px!important;
+  padding-top:8px!important;
+}
+body.bb-sr-mobile-v2 .selected-total{
+  min-width:0;font-size:8px!important;margin:0!important;
+  line-height:1.3;
+}
+body.bb-sr-mobile-v2 .selected-total strong{
+  display:block;
+  font-size:14px!important;
+  white-space:nowrap;
+}
+body.bb-sr-mobile-v2 .action-buttons,
+body.bb-sr-mobile-v2 .action-buttons .primary-btn,
+body.bb-sr-mobile-v2 .action-buttons .success-btn{
+  min-width:0!important;
+}
+body.bb-sr-mobile-v2 .action-buttons{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+body.bb-sr-mobile-v2 .action-buttons button{
+  font-size:clamp(8px,2.35vw,10px)!important;
+  padding:8px 4px!important;
+  min-height:38px!important;
+  border-radius:9px;
+  width:100%!important;
+}
+body.bb-sr-mobile-v2 #page-payment .bb-sr-hidden-empty{display:none!important}
+body.bb-sr-mobile-v2 #page-payment .bb-sr-about-earnings{
+  font-size:9px;color:#60778e;margin:2px 0 5px;
+  border:1px solid #d9e5f1;border-radius:10px;
+  padding:7px 10px;background:#fff;
+}
+body.bb-sr-mobile-v2 #page-payment .bb-sr-about-earnings summary{
+  cursor:pointer;font-weight:800;color:#2a658f;
+}
+body.bb-sr-mobile-v2 #page-payment .bb-sr-about-earnings .note{
+  margin:7px 0 0!important;
+  font-size:9px!important;
+  border:0;background:none;padding:0!important;
+}
+/* Other staff pages keep all their existing forms and history fields. */
+body.bb-sr-mobile-v2 .grid-2{gap:8px!important}
+body.bb-sr-mobile-v2 .admin-tools{padding:8px!important;margin-bottom:8px!important}
+body.bb-sr-mobile-v2 .readonly-banner{line-height:1.4!important}
+@media(max-width:360px){
+  body.bb-sr-mobile-v2 .hero h1{font-size:13px!important}
+  body.bb-sr-mobile-v2 .nav{gap:3px!important}
+  body.bb-sr-mobile-v2 .nav .nav-btn{padding:6px 2px!important;font-size:7.9px!important;min-height:58px!important}
+  body.bb-sr-mobile-v2 .summary-grid{gap:3px!important}
+  body.bb-sr-mobile-v2 .summary-grid .summary-card{padding:6px 4px!important;min-height:100px}
+  body.bb-sr-mobile-v2 .salary-stat strong{font-size:10px!important}
+  body.bb-sr-mobile-v2 .salary-head strong{font-size:10px!important}
+}
