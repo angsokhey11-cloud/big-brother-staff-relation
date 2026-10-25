@@ -105,6 +105,15 @@
       el.dataset.bbSrCleanLabel='1';
     });
   }
+  function updateToast(){
+    var toast=document.getElementById('toast');
+    if(!toast||toast.querySelector('.bb-sr-icon'))return;
+    var msg=toast.textContent||'';
+    if(!msg.includes('✅'))return;
+    toast.textContent=msg.replace(/✅/gu,'').trim();
+    toast.prepend(makeIcon('circle-check','teal'));
+    fillIcons(toast);
+  }
   function updatePending(){
     var rows=document.getElementById('pendingPaymentRows');
     var card=rows?.closest('.card');
@@ -140,6 +149,7 @@
     updateRefresh();
     updateComparison();
     decorateEarnings();
+    updateToast();
     updatePending();
     ensureAboutEarnings();
     wireViewAll();
@@ -165,6 +175,8 @@
     }
     var refresh=document.getElementById('refreshBtn');
     if(refresh)new MutationObserver(schedule).observe(refresh,{childList:true,subtree:true,characterData:true});
+    var toast=document.getElementById('toast');
+    if(toast)new MutationObserver(schedule).observe(toast,{childList:true,subtree:true,characterData:true});
   }
   window.BBStaffRelationCompactMobileV2={update:update};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
