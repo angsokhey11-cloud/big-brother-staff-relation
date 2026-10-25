@@ -18,7 +18,16 @@
     var node=document.createElement('span');
     node.className='bb-sr-staff-picker-icon';
     node.setAttribute('aria-hidden','true');
-    if(icons&&typeof icons.named==='function')node.innerHTML=icons.named(name);
+    var localPaths={
+      'chevron-down':'<path d="m6 9 6 6 6-6"/>',
+      'x':'<path d="M18 6 6 18M6 6l12 12"/>',
+      'check':'<path d="m20 6-11 11-5-5"/>'
+    };
+    if(localPaths[name]){
+      node.innerHTML='<svg class="bb-function-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+localPaths[name]+'</svg>';
+    }else if(icons&&typeof icons.named==='function'){
+      node.innerHTML=icons.named(name);
+    }
     return node;
   }
   function make(tag,className,text){
