@@ -76,6 +76,7 @@
   sheet.setAttribute('role','dialog');
   sheet.setAttribute('aria-modal','true');
   sheet.setAttribute('aria-label','Select staff member');
+  sheet.setAttribute('tabindex','-1');
   var handle=make('div','bb-sr-staff-picker-handle');
   handle.setAttribute('aria-hidden','true');
   var head=make('div','bb-sr-staff-picker-head');
@@ -157,8 +158,10 @@
     trigger.setAttribute('aria-expanded','true');
     search.value='';
     render();
+    // Show the list immediately WITHOUT popping open Android/iOS keyboards.
+    // Staff can tap Search if they need it, or directly tap a staff row.
     requestAnimationFrame(function(){
-      if(open)search.focus({preventScroll:true});
+      if(open)sheet.focus({preventScroll:true});
     });
   }
   function close(){
