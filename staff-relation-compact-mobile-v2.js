@@ -133,26 +133,108 @@
     note.parentNode.insertBefore(details,note);
     details.appendChild(note);
   }
-  function wireViewAll(){
-    var button=document.getElementById('bbSrViewAllEarnings');
-    var page=document.getElementById('page-payment');
-    if(!button||!page||button.dataset.bbSrBound)return;
-    button.dataset.bbSrBound='1';
-    button.addEventListener('click',function(){
-      var open=page.classList.toggle('bb-sr-all-earnings');
-      button.textContent=open?'Compact':'View All';
-      button.setAttribute('aria-expanded',String(open));
+  /* V3 Available Payment: one transaction per row, grouped by earning type,
+     with oldest dates first within each group. Moves existing live nodes
+     so native selection handlers, IDs and currencies remain unchanged. */
+  var paymentCategories=[
+    {key:'sales',label:'Sales Incentive',icon:'chart-line',tone:'blue'},
+    {key:'driver',label:'Driver Allowance',icon:'truck',tone:'indigo'},
+    {key:'salary',label:'Salary',icon:'banknote',tone:'teal'},
+    {key:'special',label:'Special Allowance',icon:'package',tone:'violet'},
+    {key:'other',label:'Other Earnings',icon:'wallet',tone:'blue'}
+  ];
+  var monthNumbers={
+    jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
+    jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
+  };
+  function categoryFor(row){
+    var title=stripBuiltInEmoji(row.querySelector('.earning-title')?.textContent||'')
+      .toLowerCase();
+    if(title.includes('sales incentive')||title.includes('incentive adjustment'))return 'sales';
+    if(title.includes('driver')||title.includes('allowance adjustment'))return 'driver';
+    if(title.includes('special allowance'))return 'special';
+    if(title.includes('salary'))return 'salary';
+    return 'other'; // Never discard unexpected future earning types.
+  }
+  function paymentDate(row){
+    var text=String(row.querySelector('.earning-meta')?.textContent||'');
+    var date=text.match(/\b(\d{1,2})-([A-Za-z]{3})-(\d{4})\b/);
+    if(date){
+      var month=monthNumbers[date[2].toLowerCase()];
+      if(month)return (+date[3])*10000+month*100+(+date[1]);
+    }
+    var month=text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})\b/i);
+    if(month)return (+month[2])*10000+monthNumbers[month[1].slice(0,3).toLowerCase()]*100+1;
+    // Missing dates go last, rather than accidentally being treated as new.
+    return Number.MAX_SAFE_INTEGER;
+  }
+  function groupEarnings(){
+    var list=document.getElementById('earningList');
+    if(!list)return;
+    // The main renderer creates direct .earning children on every data refresh.
+    // Already-grouped rows never need a second DOM move.
+    var rows=Array.from(list.children).filter(function(el){return el.classList.contains('earning');});
+    if(!rows.length)return;
+    var groups=new Map();
+    paymentCategories.forEach(function(category){groups.set(category.key,[]);});
+    rows.forEach(function(row,index){
+      var key=categoryFor(row);
+      var item={row:row,index:index,date:paymentDate(row)};
+      groups.get(key).push(item);
+      // A category heading already identifies a normal earning type;
+      // retain role/adjustment labels to distinguish special line items.
+      var title=stripBuiltInEmoji(row.querySelector('.earning-title')?.textContent||'');
+      var simple=(key==='sales'&&title==='Sales Incentive')||
+        (key==='salary'&&title==='Monthly Salary')||
+        (key==='special'&&title==='Special Allowance');
+      row.classList.toggle('bb-sr-payment-simple',simple);
     });
+    var fragment=document.createDocumentFragment();
+    paymentCategories.forEach(function(category){
+      var items=groups.get(category.key);
+      if(!items.length)return; // No empty category.
+      items.sort(function(a,b){
+        if(a.date!==b.date)return a.date-b.date;
+        var idA=a.row.querySelector('.earning-check')?.value||'';
+        var idB=b.row.querySelector('.earning-check')?.value||'';
+        var numericIdA=Number(idA),numericIdB=Number(idB);
+        if(idA&&idB&&Number.isFinite(numericIdA)&&Number.isFinite(numericIdB)&&numericIdA!==numericIdB)
+          return numericIdA-numericIdB;
+        return a.index-b.index;
+      });
+      var section=document.createElement('section');
+      section.className='bb-sr-payment-group';
+      section.dataset.category=category.key;
+      var head=document.createElement('div');
+      head.className='bb-sr-payment-group-head';
+      head.appendChild(makeIcon(category.icon,category.tone));
+      var label=document.createElement('strong');
+      label.textContent=category.label;
+      head.appendChild(label);
+      var count=document.createElement('span');
+      count.className='bb-sr-payment-group-count';
+      count.textContent=String(items.length);
+      count.setAttribute('aria-label',items.length+' payment'+(items.length===1?'':'s'));
+      head.appendChild(count);
+      section.appendChild(head);
+      var body=document.createElement('div');
+      body.className='bb-sr-payment-group-rows';
+      items.forEach(function(item){body.appendChild(item.row);});
+      section.appendChild(body);
+      fragment.appendChild(section);
+    });
+    list.replaceChildren(fragment);
+    fillIcons(list);
   }
   function update(){
     fillIcons(document);
     updateRefresh();
     updateComparison();
     decorateEarnings();
+    groupEarnings();
     updateToast();
     updatePending();
     ensureAboutEarnings();
-    wireViewAll();
   }
   function schedule(){
     if(pendingFrame)return;
