@@ -1,0 +1,284 @@
+/* BIG BROTHER — Staff Relation searchable picker V6 (mobile only).
+   Accessible app-owned bottom sheet, matching BIG BROTHER outline icon family.
+   Original select stays available to the existing authorized controller. */
+body.bb-sr-mobile-v2 #adminStaffWrap.bb-sr-custom-picker-enabled{
+  position:relative!important;
+  min-width:0!important;
+}
+body.bb-sr-mobile-v2 #adminStaffWrap.bb-sr-custom-picker-enabled #adminStaffSelect{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  border:0!important;
+  opacity:0!important;
+  clip-path:inset(50%)!important;
+  pointer-events:none!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-trigger{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+  min-height:48px!important;
+  width:100%!important;
+  border:1px solid #c6dbef!important;
+  border-radius:12px!important;
+  padding:8px 10px!important;
+  color:#173c65!important;
+  background:linear-gradient(180deg,#fff,#f7fbff)!important;
+  text-align:left!important;
+  box-shadow:0 1px 3px rgba(18,56,99,.05)!important;
+  font-family:inherit!important;
+  font-size:12px!important;
+  font-weight:750!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-trigger:active,
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-trigger[aria-expanded="true"]{
+  background:#e9f5ff!important;
+  border-color:#77b7e9!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-trigger:focus-visible{
+  outline:2px solid #1979d6!important;
+  outline-offset:2px!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-trigger-avatar,
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-avatar{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  border:1px solid #d5e9fd;
+  border-radius:50%;
+  background:#e8f3ff;
+  color:#1f689f;
+  font-size:10px;
+  font-weight:900;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-trigger-text{
+  flex:1 1 auto;
+  min-width:0;
+  display:block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-icon{
+  display:inline-flex;
+  flex:0 0 auto;
+  width:18px;
+  height:18px;
+  color:#2979bf;
+  align-items:center;
+  justify-content:center;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-icon .bb-function-svg{
+  width:100%!important;
+  height:100%!important;
+  stroke:currentColor;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-overlay[hidden]{display:none!important}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-overlay{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483000!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  background:rgba(12,33,57,.49)!important;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  padding:0!important;
+  margin:0!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-sheet{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  max-width:700px;
+  max-height:min(78dvh,660px);
+  min-height:250px;
+  background:#fafdff;
+  border:1px solid #d5e5f4;
+  border-bottom:0;
+  border-radius:22px 22px 0 0;
+  box-shadow:0 -12px 40px rgba(2,28,64,.19);
+  padding:9px 13px max(14px,env(safe-area-inset-bottom));
+  overflow:hidden;
+  font-family:inherit;
+  color:#173b61;
+  animation:bb-sr-staff-picker-rise .16s ease-out;
+}
+@keyframes bb-sr-staff-picker-rise{
+  from{opacity:.8;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-handle{
+  flex:0 0 auto;
+  align-self:center;
+  width:38px;
+  height:4px;
+  border-radius:999px;
+  background:#c7d7e9;
+  margin:0 0 12px;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 2px 11px;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-headings{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  min-width:0;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-headings strong{
+  font-size:16px;
+  font-weight:900;
+  color:#113d6b;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-count{
+  font-size:10px;
+  color:#6b839b;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-close{
+  appearance:none!important;
+  flex:0 0 auto;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:34px!important;
+  height:34px!important;
+  border:1px solid #dce9f4!important;
+  border-radius:50%!important;
+  background:#f0f6fc!important;
+  padding:8px!important;
+  color:#476b90!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-close .bb-sr-staff-picker-icon{color:inherit}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-search{
+  display:flex;
+  flex:0 0 auto;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  border:1px solid #c8deef;
+  border-radius:11px;
+  background:#eff7ff;
+  padding:0 11px;
+  margin-bottom:8px;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-search:focus-within{
+  border-color:#4a9fe4;
+  box-shadow:0 0 0 2px #d5ebff;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-search input{
+  flex:1 1 auto;
+  display:block;
+  min-width:0;
+  min-height:42px;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  color:#173b61!important;
+  padding:8px 0!important;
+  font:500 13px/1.3 inherit;
+  font-size:13px!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-search input::placeholder{
+  color:#7892ac!important;
+  opacity:1!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-list{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding:2px 0 max(10px,env(safe-area-inset-bottom));
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  display:flex!important;
+  flex:0 0 auto;
+  align-items:center!important;
+  gap:10px!important;
+  width:100%!important;
+  min-height:51px!important;
+  padding:9px 10px!important;
+  border:1px solid #e5edf6!important;
+  border-radius:11px!important;
+  background:#fff!important;
+  text-align:left!important;
+  color:#264768!important;
+  box-shadow:none!important;
+  font:inherit!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person:active{
+  border-color:#9ac7ef!important;
+  background:#eef7ff!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person.is-selected{
+  border-color:#75ade3!important;
+  background:#e8f4ff!important;
+  box-shadow:inset 3px 0 0 #1778cc!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person.is-selected .bb-sr-staff-picker-avatar{
+  color:#fff;
+  background:#1978c9;
+  border-color:#1978c9;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person-label{
+  flex:1 1 auto;
+  min-width:0;
+  font-size:12px!important;
+  font-weight:700;
+  line-height:1.26;
+  color:#1f456c;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person.is-selected .bb-sr-staff-picker-person-label{
+  font-weight:900;
+  color:#1264b0;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-check{
+  display:flex;
+  flex:0 0 18px;
+  width:18px;
+  color:#1676c8;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-no-results{
+  padding:20px 10px;
+  color:#607b98;
+  text-align:center;
+  font-size:12px;
+}
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-person:focus-visible,
+body.bb-sr-mobile-v2 .bb-sr-staff-picker-close:focus-visible{
+  outline:2px solid #1678d0!important;
+  outline-offset:2px!important;
+}
+@media(max-width:380px){
+  body.bb-sr-mobile-v2 .bb-sr-staff-picker-sheet{padding-left:10px;padding-right:10px}
+  body.bb-sr-mobile-v2 .bb-sr-staff-picker-person{padding:8px 7px!important;gap:7px!important}
+  body.bb-sr-mobile-v2 .bb-sr-staff-picker-person-label{font-size:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body.bb-sr-mobile-v2 .bb-sr-staff-picker-sheet{animation:none!important}
+}
