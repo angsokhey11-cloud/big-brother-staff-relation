@@ -80,16 +80,29 @@
       fillIcons(td);
     });
   }
+  function stripBuiltInEmoji(value){
+    // Shared staff engine still prefixes earning names with legacy emojis.
+    // Strip ONLY those system symbols on mobile; do not touch user remarks.
+    return String(value||'').replace(/(?:💼|🚚|💵|🎁|➕|📊)/gu,'').replace(/ {2,}/g,' ').trim();
+  }
   function decorateEarnings(){
     document.querySelectorAll('#earningList .earning-title').forEach(function(title){
       if(title.querySelector('.bb-sr-icon'))return;
-      var text=title.textContent||'';
+      var text=stripBuiltInEmoji(title.textContent);
+      title.textContent=text;
       var type=/driver/i.test(text)?'truck':
         /incentive/i.test(text)?'chart-line':
         /special/i.test(text)?'package':
         /salary/i.test(text)?'banknote':'wallet';
       title.prepend(makeIcon(type,/driver/i.test(text)?'indigo':'blue'));
       fillIcons(title);
+    });
+    // Table labels come from the shared Staff Relation renderer as well.
+    document.querySelectorAll('#pendingPaymentRows td:nth-child(3) div, #historyRows td:nth-child(4)').forEach(function(el){
+      if(el.dataset.bbSrCleanLabel==='1')return;
+      var clean=stripBuiltInEmoji(el.textContent);
+      if(clean!==el.textContent)el.textContent=clean;
+      el.dataset.bbSrCleanLabel='1';
     });
   }
   function updatePending(){
@@ -143,12 +156,12 @@
     if(started)return;
     started=true;
     update();
-    var payment=document.getElementById('page-payment');
-    if(payment){
+    var main=document.getElementById('mainContent');
+    if(main){
       var observer=new MutationObserver(schedule);
-      // Renderers replace earning rows on refresh. React only to DOM changes,
-      // never schedule a timer, poll, or query the backend.
-      observer.observe(payment,{childList:true,subtree:true});
+      // All tabs share the Staff Relation renderer. Watch their DOM changes
+      // (not a timer) to clean new payment names and keep the SVG style.
+      observer.observe(main,{childList:true,subtree:true});
     }
     var refresh=document.getElementById('refreshBtn');
     if(refresh)new MutationObserver(schedule).observe(refresh,{childList:true,subtree:true,characterData:true});
