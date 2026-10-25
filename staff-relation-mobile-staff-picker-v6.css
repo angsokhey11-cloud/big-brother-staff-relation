@@ -196,6 +196,19 @@ body.bb-sr-mobile-v2 .bb-sr-staff-picker-search input{
   font-size:13px!important;
   line-height:1.3!important;
 }
+/* Admin View locks accounting form inputs; the picker search is an
+   authorized navigation/filter control, not a payment or leave form.
+   Explicitly keep it touchable and editable inside read-only Admin View. */
+body.bb-sr-mobile-v2.admin-readonly .bb-sr-staff-picker-overlay .bb-sr-staff-picker-search input[type="search"]{
+  pointer-events:auto!important;
+  -webkit-user-select:text!important;
+  user-select:text!important;
+  caret-color:#1267b0!important;
+  background:transparent!important;
+  color:#173b61!important;
+  -webkit-text-fill-color:#173b61!important;
+  touch-action:manipulation;
+}
 body.bb-sr-mobile-v2 .bb-sr-staff-picker-search input::placeholder{
   color:#7892ac!important;
   opacity:1!important;
