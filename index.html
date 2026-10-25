@@ -24,11 +24,11 @@
 
     <section id="adminTools" class="admin-tools">
       <div class="admin-tools-row">
-        <div class="admin-title"><strong>🔐 Admin Staff Relation Access</strong><span>Admin can view every staff relation account without impersonating staff.</span></div>
+        <div class="admin-title"><strong>🔐 Admin Staff Relation Access</strong><span>Admin can review and submit requests for selected staff, without impersonating them.</span></div>
         <div class="mode-switch"><button id="personalModeBtn" class="mode-btn active">My Account</button><button id="adminModeBtn" class="mode-btn">Admin View</button></div>
-        <div id="adminStaffWrap" class="admin-select-wrap"><label>View Staff Relation</label><select id="adminStaffSelect"></select></div>
+        <div id="adminStaffWrap" class="admin-select-wrap"><label>Select Staff to View or Request</label><select id="adminStaffSelect"></select></div>
       </div>
-      <div id="readOnlyBanner" class="readonly-banner">ADMIN VIEW — READ ONLY. You can review payment, salary, leave and special-request history for this staff identity. Requests must still be submitted from the staff member’s own account.</div>
+      <div id="readOnlyBanner" class="readonly-banner">ADMIN ON BEHALF — Select a staff member to request payments, leave, or salary advance. Requests remain pending approval; your Admin login is recorded.</div>
     </section>
 
     <nav class="nav">
@@ -78,7 +78,7 @@
     </section>
 
     <section id="page-leave" class="page">
-      <div id="leaveReadonlyNote" class="note">Admin View is read-only. Switch to My Account to submit your own leave request.</div>
+      <div id="leaveReadonlyNote" class="note">Select a staff account before submitting a leave request.</div>
       <div class="grid-2">
         <section class="card"><div class="card-head"><strong>🏖️ New Leave Request</strong><span>Only Admin-approved leave affects Special Allowance</span></div><div class="card-body"><div class="form-grid"><div class="field"><label>Leave From</label><input id="leaveFrom" type="date"></div><div class="field"><label>Leave To</label><input id="leaveTo" type="date"></div><div class="field full"><label>Reason</label><textarea id="leaveReason" placeholder="Why do you need leave?"></textarea></div></div><div id="leaveStatus" class="status-line"></div><div class="form-actions"><button id="submitLeaveBtn" class="primary-btn">Submit Leave Request</button></div></div></section>
         <section class="card"><div class="card-head"><strong>Leave Rule</strong><span>Special Allowance connection</span></div><div class="card-body"><div class="info-box"><small>Only Approved Leave Counts</small><strong>PENDING / REJECTED = No Deduction</strong></div><div class="note">If Special Allowance is enabled, BIG BROTHER counts approved leave days at month-end and deducts the configured amount per approved leave day. The allowance never becomes negative.</div></div></section>
@@ -90,7 +90,7 @@
     </section>
 
     <section id="page-special" class="page">
-      <div id="advanceReadonlyNote" class="note">Admin View is read-only. Switch to My Account to submit your own Salary Advance request.</div>
+      <div id="advanceReadonlyNote" class="note">Select a staff account before submitting a salary advance.</div>
       <div class="grid-2">
         <section class="card"><div class="card-head"><strong>⭐ Special Request — Salary Advance</strong><span>Borrow from your monthly salary</span></div><div class="card-body"><div class="field"><label>Salary Month</label><input id="advanceMonth" type="month"></div><div class="info-grid"><div class="info-mini"><small>Gross Salary</small><strong id="advanceGross">$0.00</strong></div><div class="info-mini"><small>Approved Advances</small><strong id="advanceApproved">$0.00</strong></div><div class="info-mini"><small>Remaining Salary</small><strong id="advanceRemaining">$0.00</strong></div></div><div class="form-grid"><div class="field full"><label>Amount Requested</label><input id="advanceAmount" type="number" min="0" step="0.01" placeholder="0.00"><div id="advanceMaxHelp" class="field-help">Maximum depends on remaining salary.</div></div><div class="field full"><label>Reason</label><textarea id="advanceReason" placeholder="Reason for Salary Advance..."></textarea></div></div><div id="advanceStatus" class="status-line"></div><div class="form-actions"><button id="submitAdvanceBtn" class="primary-btn">Submit Special Request</button></div></div></section>
         <section class="card"><div class="card-head"><strong>How Salary Advance Works</strong><span>Protected against double payment</span></div><div class="card-body"><div class="info-box"><small>Remaining Salary</small><strong>Gross Salary − Approved Advances</strong></div><div class="note">Admin can approve the full requested amount or a smaller amount. Only the approved amount reduces salary. On normal salary request day, only the remaining salary can be requested.</div></div></section>
@@ -100,6 +100,6 @@
   </main>
 </div>
 <div id="toast" class="toast" hidden></div>
-<script src="staff-relation.js?v=20260927-location-compare2"></script>
+<script src="staff-relation.js?v=20261025-admin-onbehalf1"></script>
 </body>
 </html>
