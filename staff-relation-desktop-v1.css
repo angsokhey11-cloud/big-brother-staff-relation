@@ -176,7 +176,8 @@ body.bb-sr-desktop-v1 .bb-sr-salary-workspace{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   align-items:start;gap:12px;margin:0 0 12px;
 }
-body.bb-sr-desktop-v1 .bb-sr-salary-workspace:not(:has(.earning-compare-card)){
+body.bb-sr-desktop-v1 .bb-sr-salary-workspace:not(:has(.earning-compare-card)),
+body.bb-sr-desktop-v1 .bb-sr-salary-workspace:has(.earning-compare-card[style*="display: none"]){
   grid-template-columns:1fr;
 }
 body.bb-sr-desktop-v1 .salary-card,
@@ -428,6 +429,10 @@ body.bb-sr-desktop-v1 .info-box strong{font-size:17px}
 body.bb-sr-desktop-v1 .note{font-size:11px}
 body.bb-sr-desktop-v1 .status-line{font-size:11px}
 
+/* Actual RPC success messages use the same SVG family, not emoji glyphs. */
+body.bb-sr-desktop-v1 #toast .bb-sr-icon{
+  width:17px;height:17px;color:#fff;vertical-align:middle;margin-right:6px;
+}
 /* Dynamic comparison overrides are loaded after this file by the controller. */
 body.bb-sr-desktop-v1 .earning-compare-card .earning-compare-note{line-height:1.5}
 
