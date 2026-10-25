@@ -3,62 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BIG BROTHER — Staff Relation</title>
+<meta name="theme-color" content="#eef5fc">
+<title>BIG BROTHER — Staff Relation Desktop</title>
 <link rel="stylesheet" href="staff-relation.css?v=20260913-1">
+<link rel="stylesheet" href="staff-relation-desktop-history-v1.css?v=20261025-pc1">
+<link rel="stylesheet" href="staff-relation-desktop-v1.css?v=20261025-pc1">
 </head>
-<body>
+<body class="bb-sr-desktop-v1">
 <div class="app">
   <div class="hero">
-    <div><h1>👥 BIG BROTHER — Staff Relation</h1><p>Your Payment • Payment History • Leave • Special Request</p></div>
-    <div id="profilePill" class="staff-pill">🔐 Personal Staff Account</div>
+    <div class="bb-sr-hero-title">
+      <h1><span class="bb-sr-icon" data-bb-icon="users" data-bb-tone="blue"></span>BIG BROTHER — Staff Relation</h1>
+      <p>Your Payment • Payment History • Leave • Special Request</p>
+    </div>
+    <button id="refreshBtn" class="refresh-btn bb-sr-refresh" type="button" aria-label="Refresh Staff Relation" title="Refresh Staff Relation">Refresh</button>
+    <div id="profilePill" class="staff-pill" hidden>Personal Staff Account</div>
   </div>
 
   <div id="loadingScreen" class="loading-screen"><div class="loading-card">Loading your Staff Relation account…</div></div>
   <div id="errorBox" class="error-card" hidden></div>
 
   <main id="mainContent" hidden>
-    <section class="profile-card">
+    <section class="profile-card" hidden aria-hidden="true">
       <div class="profile-main"><div id="avatar" class="avatar">BB</div><div><h2 id="staffName">Staff</h2><p id="staffMeta">Staff ID • Position • Department</p></div></div>
-      <div class="profile-actions"><button id="refreshBtn" class="refresh-btn">↻ Refresh</button></div>
     </section>
 
     <section id="adminTools" class="admin-tools">
       <div class="admin-tools-row">
-        <div class="admin-title"><strong>🔐 Admin Staff Relation Access</strong><span>Admin can review and submit requests for selected staff, without impersonating them.</span></div>
+        <div class="admin-title"><strong><span class="bb-sr-icon" data-bb-icon="shield-check" data-bb-tone="amber"></span>Admin Staff Relation Access</strong><span>Admin can review and submit requests for selected staff, without impersonating them.</span></div>
         <div class="mode-switch"><button id="personalModeBtn" class="mode-btn active">My Account</button><button id="adminModeBtn" class="mode-btn">Admin View</button></div>
         <div id="adminStaffWrap" class="admin-select-wrap"><label>Select Staff to View or Request</label><select id="adminStaffSelect"></select></div>
       </div>
       <div id="readOnlyBanner" class="readonly-banner">ADMIN ON BEHALF — Select a staff member to request payments, leave, or salary advance. Requests remain pending approval; your Admin login is recorded.</div>
     </section>
 
-    <nav class="nav">
-      <button class="nav-btn active" data-page="payment">💰 Your Payment</button>
-      <button class="nav-btn" data-page="history">🧾 Payment History</button>
-      <button class="nav-btn" data-page="leave">🏖️ Leave Request</button>
-      <button class="nav-btn" data-page="leave-history">📋 Leave History</button>
-      <button class="nav-btn" data-page="special">⭐ Special Request</button>
+    <nav class="nav" aria-label="Staff Relation functions">
+      <button class="nav-btn active" type="button" data-page="payment"><span class="bb-sr-icon" data-bb-icon="wallet" data-bb-tone="blue"></span><span>Your Payment</span></button>
+      <button class="nav-btn" type="button" data-page="history"><span class="bb-sr-icon" data-bb-icon="history" data-bb-tone="indigo"></span><span>Payment History</span></button>
+      <button class="nav-btn" type="button" data-page="leave"><span class="bb-sr-icon" data-bb-icon="calendar" data-bb-tone="blue"></span><span>Leave Request</span></button>
+      <button class="nav-btn" type="button" data-page="leave-history"><span class="bb-sr-icon" data-bb-icon="clipboard-list" data-bb-tone="teal"></span><span>Leave History</span></button>
+      <button class="nav-btn" type="button" data-page="special"><span class="bb-sr-icon" data-bb-icon="file-plus" data-bb-tone="violet"></span><span>Special Request</span></button>
     </nav>
 
     <section id="page-payment" class="page active">
       <section class="summary-grid">
-        <div class="summary-card"><small>Available Earnings</small><strong id="availableCount">0</strong><div class="sub">Items ready to request.</div></div>
-        <div class="summary-card"><small>Available USD</small><strong id="availableUSD">$0.00</strong><div class="sub">Requestable USD earnings.</div></div>
-        <div class="summary-card"><small>Payment Requests</small><strong id="pendingRequestCount">0</strong><div class="sub">Waiting for Admin approval.</div></div>
-        <div class="summary-card"><small>Salary Advances</small><strong id="approvedAdvanceSummary">$0.00</strong><div class="sub">Approved advances this salary month.</div></div>
+        <div class="summary-card"><span class="bb-sr-icon" data-bb-icon="database" data-bb-tone="teal"></span><small>Available Earnings</small><strong id="availableCount">0</strong><div class="sub">Items ready to request.</div></div>
+        <div class="summary-card"><span class="bb-sr-icon" data-bb-icon="circle-dollar" data-bb-tone="blue"></span><small>Available USD</small><strong id="availableUSD">$0.00</strong><div class="sub">Requestable USD earnings.</div></div>
+        <div class="summary-card"><span class="bb-sr-icon" data-bb-icon="clipboard-list" data-bb-tone="amber"></span><small>Payment Requests</small><strong id="pendingRequestCount">0</strong><div class="sub">Waiting for Admin approval.</div></div>
+        <div class="summary-card"><span class="bb-sr-icon" data-bb-icon="credit-card" data-bb-tone="violet"></span><small>Salary Advances</small><strong id="approvedAdvanceSummary">$0.00</strong><div class="sub">Approved advances this salary month.</div></div>
       </section>
 
+      <div class="bb-sr-salary-workspace">
       <section class="salary-card">
-        <div class="salary-head"><strong>💵 Monthly Salary</strong><span id="salaryMonthLabel">Current Month</span></div>
+        <div class="salary-head"><strong><span class="bb-sr-icon" data-bb-icon="banknote" data-bb-tone="teal"></span>Monthly Salary</strong><div class="bb-sr-salary-period"><span id="salaryMonthLabel">Current Month</span><span id="salaryRequestBadge" class="salary-lock badge orange">LOCKED</span></div></div>
         <div class="salary-body">
           <div class="salary-stat"><small>Gross Salary</small><strong id="salaryGross">$0.00</strong></div>
           <div class="salary-stat"><small>Salary Advances</small><strong id="salaryAdvance">$0.00</strong></div>
           <div class="salary-stat"><small>Remaining Salary</small><strong id="salaryRemaining">$0.00</strong></div>
-          <div class="salary-stat"><small>Request Date</small><strong id="salaryRequestDate">-</strong><span id="salaryRequestBadge" class="salary-lock badge orange">LOCKED</span></div>
+          <div class="salary-stat"><small>Request Date</small><strong id="salaryRequestDate">-</strong></div>
         </div>
       </section>
 
+      </div><!-- PC salary / earnings comparison workspace -->
+
       <section class="card">
-        <div class="card-head"><strong>Available Payment</strong><span id="availableLabel">0 earnings</span></div>
+        <div class="card-head"><strong><span class="bb-sr-icon" data-bb-icon="receipt" data-bb-tone="amber"></span>Available Payment</strong><div class="bb-sr-head-actions"><span id="availableLabel">0 earnings</span></div></div>
         <div class="card-body">
           <div id="earningList" class="earning-list"></div>
           <div class="actions-row"><div class="selected-total">Selected: <strong id="selectedTotal">$0.00</strong></div><div class="action-buttons"><button id="requestSelectedBtn" class="primary-btn">Request Selected</button><button id="requestAllBtn" class="success-btn">Request All</button></div></div>
@@ -67,32 +76,32 @@
       </section>
 
       <section class="card">
-        <div class="card-head"><strong>Pending Payment Requests</strong><span>Waiting for Admin Work → Staff Request</span></div>
+        <div class="card-head"><strong><span class="bb-sr-icon" data-bb-icon="clipboard-check" data-bb-tone="amber"></span>Pending Payment Requests</strong><span>Waiting for Admin Work → Staff Request</span></div>
         <div class="table-wrap"><table><thead><tr><th>Request</th><th>Requested At</th><th>Items</th><th class="money">Amount</th><th>Status</th></tr></thead><tbody id="pendingPaymentRows"></tbody></table></div>
       </section>
       <div class="note">Your Payment can include Sales Incentive, Driver 1 / Driver 2 Allowance, Monthly Salary, and Special Allowance. The same staff member can receive multiple earning types when they perform multiple roles.</div>
     </section>
 
     <section id="page-history" class="page">
-      <section class="card"><div class="card-head"><strong>🧾 Payment History</strong><span id="historyCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>Paid Date</th><th>Reference</th><th>Payment Type</th><th>Detail</th><th class="money">Amount</th><th>Expense Ref.</th><th>Status</th></tr></thead><tbody id="historyRows"></tbody></table></div></section>
+      <section class="card"><div class="card-head"><strong><span class="bb-sr-icon" data-bb-icon="history" data-bb-tone="indigo"></span>Payment History</strong><span id="historyCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>Paid Date</th><th>Reference</th><th>Payment Type</th><th>Detail</th><th class="money">Amount</th><th>Expense Ref.</th><th>Status</th></tr></thead><tbody id="historyRows"></tbody></table></div></section>
     </section>
 
     <section id="page-leave" class="page">
       <div id="leaveReadonlyNote" class="note">Select a staff account before submitting a leave request.</div>
       <div class="grid-2">
-        <section class="card"><div class="card-head"><strong>🏖️ New Leave Request</strong><span>Only Admin-approved leave affects Special Allowance</span></div><div class="card-body"><div class="form-grid"><div class="field"><label>Leave From</label><input id="leaveFrom" type="date"></div><div class="field"><label>Leave To</label><input id="leaveTo" type="date"></div><div class="field full"><label>Reason</label><textarea id="leaveReason" placeholder="Why do you need leave?"></textarea></div></div><div id="leaveStatus" class="status-line"></div><div class="form-actions"><button id="submitLeaveBtn" class="primary-btn">Submit Leave Request</button></div></div></section>
+        <section class="card"><div class="card-head"><strong><span class="bb-sr-icon" data-bb-icon="calendar" data-bb-tone="blue"></span>New Leave Request</strong><span>Only Admin-approved leave affects Special Allowance</span></div><div class="card-body"><div class="form-grid"><div class="field"><label>Leave From</label><input id="leaveFrom" type="date"></div><div class="field"><label>Leave To</label><input id="leaveTo" type="date"></div><div class="field full"><label>Reason</label><textarea id="leaveReason" placeholder="Why do you need leave?"></textarea></div></div><div id="leaveStatus" class="status-line"></div><div class="form-actions"><button id="submitLeaveBtn" class="primary-btn">Submit Leave Request</button></div></div></section>
         <section class="card"><div class="card-head"><strong>Leave Rule</strong><span>Special Allowance connection</span></div><div class="card-body"><div class="info-box"><small>Only Approved Leave Counts</small><strong>PENDING / REJECTED = No Deduction</strong></div><div class="note">If Special Allowance is enabled, BIG BROTHER counts approved leave days at month-end and deducts the configured amount per approved leave day. The allowance never becomes negative.</div></div></section>
       </div>
     </section>
 
     <section id="page-leave-history" class="page">
-      <section class="card"><div class="card-head"><strong>📋 Leave History</strong><span id="leaveHistoryCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>Request</th><th>Leave From</th><th>Leave To</th><th>Days</th><th>Reason</th><th>Status</th><th>Admin Note</th></tr></thead><tbody id="leaveHistoryRows"></tbody></table></div></section>
+      <section class="card"><div class="card-head"><strong><span class="bb-sr-icon" data-bb-icon="clipboard-list" data-bb-tone="teal"></span>Leave History</strong><span id="leaveHistoryCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>Request</th><th>Leave From</th><th>Leave To</th><th>Days</th><th>Reason</th><th>Status</th><th>Admin Note</th></tr></thead><tbody id="leaveHistoryRows"></tbody></table></div></section>
     </section>
 
     <section id="page-special" class="page">
       <div id="advanceReadonlyNote" class="note">Select a staff account before submitting a salary advance.</div>
       <div class="grid-2">
-        <section class="card"><div class="card-head"><strong>⭐ Special Request — Salary Advance</strong><span>Borrow from your monthly salary</span></div><div class="card-body"><div class="field"><label>Salary Month</label><input id="advanceMonth" type="month"></div><div class="info-grid"><div class="info-mini"><small>Gross Salary</small><strong id="advanceGross">$0.00</strong></div><div class="info-mini"><small>Approved Advances</small><strong id="advanceApproved">$0.00</strong></div><div class="info-mini"><small>Remaining Salary</small><strong id="advanceRemaining">$0.00</strong></div></div><div class="form-grid"><div class="field full"><label>Amount Requested</label><input id="advanceAmount" type="number" min="0" step="0.01" placeholder="0.00"><div id="advanceMaxHelp" class="field-help">Maximum depends on remaining salary.</div></div><div class="field full"><label>Reason</label><textarea id="advanceReason" placeholder="Reason for Salary Advance..."></textarea></div></div><div id="advanceStatus" class="status-line"></div><div class="form-actions"><button id="submitAdvanceBtn" class="primary-btn">Submit Special Request</button></div></div></section>
+        <section class="card"><div class="card-head"><strong><span class="bb-sr-icon" data-bb-icon="file-plus" data-bb-tone="violet"></span>Special Request — Salary Advance</strong><span>Borrow from your monthly salary</span></div><div class="card-body"><div class="field"><label>Salary Month</label><input id="advanceMonth" type="month"></div><div class="info-grid"><div class="info-mini"><small>Gross Salary</small><strong id="advanceGross">$0.00</strong></div><div class="info-mini"><small>Approved Advances</small><strong id="advanceApproved">$0.00</strong></div><div class="info-mini"><small>Remaining Salary</small><strong id="advanceRemaining">$0.00</strong></div></div><div class="form-grid"><div class="field full"><label>Amount Requested</label><input id="advanceAmount" type="number" min="0" step="0.01" placeholder="0.00"><div id="advanceMaxHelp" class="field-help">Maximum depends on remaining salary.</div></div><div class="field full"><label>Reason</label><textarea id="advanceReason" placeholder="Reason for Salary Advance..."></textarea></div></div><div id="advanceStatus" class="status-line"></div><div class="form-actions"><button id="submitAdvanceBtn" class="primary-btn">Submit Special Request</button></div></div></section>
         <section class="card"><div class="card-head"><strong>How Salary Advance Works</strong><span>Protected against double payment</span></div><div class="card-body"><div class="info-box"><small>Remaining Salary</small><strong>Gross Salary − Approved Advances</strong></div><div class="note">Admin can approve the full requested amount or a smaller amount. Only the approved amount reduces salary. On normal salary request day, only the remaining salary can be requested.</div></div></section>
       </div>
       <section class="card"><div class="card-head"><strong>Special Request History</strong><span id="advanceHistoryCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>Request</th><th>Salary Month</th><th class="money">Requested</th><th class="money">Approved</th><th>Reason</th><th>Status</th><th>Admin Note</th></tr></thead><tbody id="advanceHistoryRows"></tbody></table></div></section>
@@ -100,6 +109,9 @@
   </main>
 </div>
 <div id="toast" class="toast" hidden></div>
-<script src="staff-relation.js?v=20261025-admin-onbehalf2"></script>
+<script src="https://angsokhey11-cloud.github.io/big-brother-dashboard/mobile-function-icons-v1.js?v=20261025-receivable-collection-v2"></script>
+<script src="staff-relation-mobile-payment-history-v4.js?v=20261025-history-v4"></script>
+<script src="staff-relation-desktop-v1.js?v=20261025-pc1"></script>
+<script src="staff-relation.js?v=20261025-desktop-pc1"></script>
 </body>
 </html>
