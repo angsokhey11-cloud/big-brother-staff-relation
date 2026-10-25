@@ -81,6 +81,8 @@ body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="indigo"]{color:#4f56ad}
 body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="violet"]{color:#7a50b5}
 body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="amber"]{color:#b66f24}
 body.bb-sr-mobile-v2 .bb-sr-icon[data-bb-tone="green"]{color:#159664}
+body.bb-sr-mobile-v2 #toast .bb-sr-icon{color:#fff!important;width:16px;height:16px;vertical-align:middle;margin-right:6px}
+body.bb-sr-mobile-v2 .admin-title strong .bb-sr-icon{width:18px;height:18px;vertical-align:middle;margin-right:4px}
 
 /* Five functions, always ONE row. */
 body.bb-sr-mobile-v2 .nav{
